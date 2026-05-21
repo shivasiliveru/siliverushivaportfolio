@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Shiva — Full Stack Developer & AI Enthusiast</title>
+  <meta name="description" content="Portfolio of Shiva, a Full Stack Developer & AI Enthusiast building meaningful impact through code."/>
+  
+  <!-- Open Graph / SEO -->
+  <meta property="og:title" content="Shiva — Full Stack Developer & AI Enthusiast"/>
+  <meta property="og:description" content="Explore the portfolio of Shiva, featuring projects in AI, Web Dev, and more."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://shiva-portfolio-project.vercel.app/"/>
+
+  <link rel="icon" type="image/png" href="portfolioFavicon.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background grid */
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+      transition: opacity var(--t-slow);
+    }
+
+    /* Gradient orbs */
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(120px); pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 600px; height: 600px;
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+      top: -100px; right: -100px;
+      animation: orb1 10s ease-in-out infinite;
+    }
+    .hero-orb-2 {
+      width: 500px; height: 500px;
+      background: color-mix(in srgb, var(--accent2) 10%, transparent);
+      bottom: 0; left: -80px;
+      animation: orb2 13s ease-in-out infinite;
+    }
+    @keyframes orb1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-40px,30px) scale(1.08)} }
+    @keyframes orb2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-40px) scale(1.06)} }
+
+
+    .hero-content {
+      position: relative; z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 48px;
+    }
+
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      padding: 6px 14px;
+      border-radius: var(--r-full);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+    .hero-tag-pulse {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
+      animation: pulse-ring 2s ease infinite;
+    }
+    @keyframes pulse-ring {
+      0%  { box-shadow: 0 0 0 0   color-mix(in srgb, var(--accent) 50%, transparent); }
+      70% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%,  transparent); }
+      100%{ box-shadow: 0 0 0 0   color-mix(in srgb, var(--accent) 0%,  transparent); }
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 14vw, 180px);
+      line-height: 0.88;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .hero-name-inner {
+      display: block;
+      animation: name-slide 1s var(--ease) 0.4s both;
+    }
+    @keyframes name-slide {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+    .hero-name span { color: var(--accent); }
+
+    .hero-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(20px, 3vw, 32px);
+      color: var(--fg2);
+      margin-bottom: 36px;
+      animation: fade-up 0.9s var(--ease) 0.7s both;
+    }
+
+    .hero-tagline {
+      font-size: 17px;
+      color: var(--fg2);
+      max-width: 480px;
+      line-height: 1.75;
+      margin-bottom: 44px;
+      animation: fade-up 0.9s var(--ease) 0.85s both;
+    }
+
+    .hero-btns {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      animation: fade-up 0.9s var(--ease) 1s both;
+    }
+
+    .hero-right {
+      text-align: right;
+      flex-shrink: 0;
+      animation: fade-up 1s var(--ease) 0.9s both;
+    }
+
+    .hero-stats {
+      display: flex; flex-direction: column; gap: 20px;
+    }
+
+    .hero-stat {
+      border-right: 2px solid var(--accent);
+      padding-right: 20px;
+    }
+    .hero-stat-num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--fg);
+    }
+    .hero-stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px; right: 48px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      animation: fade-up 1s var(--ease) 1.4s both;
+    }
+    .hero-scroll-text {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      writing-mode: vertical-rl;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, var(--fg3), transparent);
+      animation: scroll-bounce 2s ease-in-out infinite;
+    }
+    @keyframes scroll-bounce {
+      0%,100%{transform:scaleY(1);transform-origin:top}
+      50%{transform:scaleY(0.5);transform-origin:bottom}
+    }
+
+    /* ── INTRO STRIP ── */
+    .intro-strip {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 0;
+    }
+    .intro-inner {
+      display: grid;
+      grid-template-columns: 1fr 2px 1fr 2px 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .intro-divider { background: var(--border); height: 60px; align-self: center; }
+    .intro-item { padding: 0 20px; }
+    .intro-item-num {
+      font-family: var(--font-display);
+      font-size: 56px;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .intro-item-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 4px;
+    }
+
+    /* ── LATEST WORK PREVIEW ── */
+    .work-preview { padding: 100px 0; }
+    .work-preview-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-rows: auto auto;
+      gap: 20px;
+    }
+
+    .work-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--t-med), transform var(--t-med);
+      cursor: none;
+    }
+    .work-item:hover { border-color: var(--border2); transform: translateY(-4px); }
+    .work-item.span-2 { grid-row: span 2; }
+
+    .work-item-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-bottom: 28px;
+    }
+    .work-item-name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 44px);
+      letter-spacing: 0.03em;
+      line-height: 0.95;
+      color: var(--fg);
+      margin-bottom: 14px;
+    }
+    .work-item-desc {
+      font-size: 14px;
+      color: var(--fg2);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .work-item-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* Hover shimmer */
+    .work-item::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 60%);
+      opacity: 0; transition: opacity var(--t-med);
+    }
+    .work-item:hover::before { opacity: 1; }
+
+    /* ── SERVICES SNAPSHOT ── */
+    .services-snap { padding: 100px 0; background: var(--bg2); }
+    .services-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+    }
+    .service-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      transition: border-color var(--t-med), transform var(--t-med);
+    }
+    .service-item:hover { border-color: var(--accent); transform: translateY(-6px); }
+    .service-item:hover .si-icon { transform: scale(1.2) rotate(-8deg); }
+    .si-icon { font-size: 32px; margin-bottom: 16px; display: block; transition: transform var(--t-med); }
+    .si-name {
+      font-family: var(--font-display);
+      font-size: 22px; letter-spacing: 0.03em;
+      color: var(--fg); margin-bottom: 10px;
+    }
+    .si-desc { font-size: 13px; color: var(--fg2); line-height: 1.65; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      padding: 100px 0;
+      text-align: center;
+    }
+    .cta-banner-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cta-big {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 8vw, 100px);
+      line-height: 0.92;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      margin-bottom: 32px;
+    }
+    .cta-big em { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+    .cta-p { font-size: 17px; color: var(--fg2); margin-bottom: 40px; line-height: 1.75; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    @media(max-width:900px){
+      .hero { padding: 0 16px 60px; overflow-x: hidden; }
+      .hero-content { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .intro-inner { grid-template-columns: 1fr; gap: 20px; }
+      .intro-divider { display: none; }
+      .work-grid { grid-template-columns: 1fr; }
+      .work-item.span-2 { grid-row: span 1; }
+      .services-row { grid-template-columns: repeat(2,1fr); }
+    }
+    @media(max-width:480px) {
+      .hero-name { font-size: 64px; }
+      .hero-sub { font-size: 18px; }
+      .hero-tagline { font-size: 14px; }
+    }
+  </style>
+</head>
+<body data-page="home">
+  <div class="grain"></div>
+  <div id="cursor"></div>
+  <div id="cursor-trail"></div>
+  <div id="progress-bar"></div>
+  <div id="page-overlay"></div>
+
+  <!-- CINEMATIC VIDEO INTRO -->
+  <div id="intro-overlay">
+    <video id="intro-video" muted playsinline preload="auto">
+      <source src="portfolioIntro.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <button id="skip-intro" class="skip-btn" aria-label="Skip Intro">Skip Intro <i class="fa-solid fa-forward"></i></button>
+  </div>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-name">
+      <span>S</span><span>H</span><span>I</span><span>V</span><span>A</span>
+    </div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+    <div class="loader-sub">Loading portfolio...</div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="/" class="nav-logo">SHI<em>V</em>A</a>
+    <ul class="nav-links">
+      <li><a href="/"              class="nav-link active"     data-page="home">Home</a></li>
+      <li><a href="about"          class="nav-link"            data-page="about" data-transition>About</a></li>
+      <li><a href="skills"         class="nav-link"            data-page="skills" data-transition>Skills</a></li>
+      <li><a href="projects"       class="nav-link"            data-page="projects" data-transition>Projects</a></li>
+      <li><a href="experience"     class="nav-link"            data-page="experience" data-transition>Experience</a></li>
+      <li><a href="contact"        class="nav-link"            data-page="contact" data-transition>Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" title="Toggle theme"><i class="fa-solid fa-circle-half-stroke theme-icon"></i></button>
+      <a href="shiva siliveru  resume.pdf" class="nav-cta resume-nav-btn" data-magnetic target="_blank">Resume <i class="fa-solid fa-file-pdf"></i></a>
+      <a href="contact" class="nav-cta" data-transition>Let's Talk <i class="fa-solid fa-arrow-right"></i></a>
+
+      <button class="menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <a href="/"              data-transition>Home</a>
+    <a href="about"          data-transition>About</a>
+    <a href="skills"         data-transition>Skills</a>
+    <a href="projects"       data-transition>Projects</a>
+    <a href="experience"     data-transition>Experience</a>
+    <a href="contact"        data-transition>Contact</a>
+  </div>
+
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-orb hero-orb-1" data-parallax="0.15"></div>
+    <div class="hero-orb hero-orb-2" data-parallax="0.1"></div>
+    <div class="hero-bg-text" aria-hidden="true" data-parallax="0.05" data-parallax-x="-0.15" data-parallax-base="translate(-50%, -50%)">SHIVA</div>
+
+    <div class="hero-content container">
+      <div class="hero-left">
+        <div class="hero-tag">
+          <span class="hero-tag-pulse"></span>
+          Open to internships & opportunities
+        </div>
+        <h1 class="hero-name">
+          <span class="hero-name-inner">SHI<span>V</span>A</span>
+        </h1>
+        <p class="hero-sub">Full Stack Developer & AI Enthusiast</p>
+        <p class="hero-tagline">
+          Building real-world applications that merge clean engineering with intelligent systems — one meaningful project at a time.
+        </p>
+        <div class="hero-btns">
+          <a href="projects" class="btn btn-fill" data-transition data-magnetic>View My Work <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="shiva siliveru  resume.pdf" class="btn btn-ghost" data-magnetic target="_blank">Download Resume</a>
+          <a href="about"    class="btn btn-ghost" data-transition>About Me</a>
+        </div>
+
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">5<span style="color:var(--accent)">+</span></div>
+            <div class="hero-stat-label">Projects Built</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">3<span style="color:var(--accent)">+</span></div>
+            <div class="hero-stat-label">Tech Domains</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">2<span style="color:var(--accent)">+</span></div>
+            <div class="hero-stat-label">Certifications</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-text">Scroll</div>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>Web Development <em><i class="fa-solid fa-star"></i></em></span>
+      <span>AI Integration <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Python <em><i class="fa-solid fa-star"></i></em></span>
+      <span>JavaScript <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Machine Learning <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Full Stack <em><i class="fa-solid fa-star"></i></em></span>
+      <span>API Design <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Problem Solving <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Web Scraping <em><i class="fa-solid fa-star"></i></em></span>
+      <span>OpenCV <em><i class="fa-solid fa-star"></i></em></span>
+      <span>MySQL <em><i class="fa-solid fa-star"></i></em></span>
+      <span>DeepFace <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Web Development <em><i class="fa-solid fa-star"></i></em></span>
+      <span>AI Integration <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Python <em><i class="fa-solid fa-star"></i></em></span>
+      <span>JavaScript <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Machine Learning <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Full Stack <em><i class="fa-solid fa-star"></i></em></span>
+      <span>API Design <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Problem Solving <em><i class="fa-solid fa-star"></i></em></span>
+      <span>Web Scraping <em><i class="fa-solid fa-star"></i></em></span>
+      <span>OpenCV <em><i class="fa-solid fa-star"></i></em></span>
+      <span>MySQL <em><i class="fa-solid fa-star"></i></em></span>
+      <span>DeepFace <em>✦</em></span>
+    </div>
+  </div>
+
+  <!-- INTRO STATS STRIP -->
+  <div class="intro-strip">
+    <div class="container">
+      <div class="intro-inner">
+        <div class="intro-item" data-reveal="up">
+          <div class="intro-item-num"><span data-count="5" data-suffix="+">5+</span></div>
+          <div class="intro-item-label">Real-World Projects Deployed</div>
+        </div>
+        <div class="intro-divider"></div>
+        <div class="intro-item" data-reveal="up" data-reveal-delay="2">
+          <div class="intro-item-num"><span data-count="3" data-suffix="+">3+</span></div>
+          <div class="intro-item-label">Technical Domains Mastered</div>
+        </div>
+        <div class="intro-divider"></div>
+        <div class="intro-item" data-reveal="up" data-reveal-delay="4">
+          <div class="intro-item-num"><span data-count="2" data-suffix="+">2+</span></div>
+          <div class="intro-item-label">Industry Certifications</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORK PREVIEW -->
+  <section class="work-preview">
+    <div class="container">
+      <div class="work-preview-header">
+        <div data-reveal="up">
+          <div class="eyebrow">Selected Work</div>
+          <h2 class="heading">Projects that matter</h2>
+        </div>
+        <a href="projects" class="btn btn-ghost" data-transition data-reveal="right">View All Projects <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+
+      <div class="work-grid">
+        <!-- Featured: Kareer Guide -->
+        <a href="https://kareer-guide.vercel.app/" target="_blank" class="work-item span-2" data-reveal="scale" data-tilt style="text-decoration:none; color:inherit; display:block">
+          <div class="work-item-num">01 — Featured</div>
+          <div class="work-item-name">Kareer Guide</div>
+          <div class="work-item-desc">AI-powered career platform that analyzes your skills and generates personalized job recommendations with step-by-step career roadmaps.</div>
+          <div class="work-item-tags">
+            <span class="chip">Python</span>
+            <span class="chip">AI/ML</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">MySQL</span>
+          </div>
+        </a>
+ 
+        <!-- Emotion Detector -->
+        <div class="work-item" data-reveal="left" data-reveal-delay="2" data-tilt>
+          <div class="work-item-num">02</div>
+          <div class="work-item-name">Emotion Detector</div>
+          <div class="work-item-desc">Real-time facial emotion recognition using webcam, DeepFace and OpenCV.</div>
+          <div class="work-item-tags">
+            <span class="chip">Python</span>
+            <span class="chip">OpenCV</span>
+            <span class="chip">DeepFace</span>
+          </div>
+        </div>
+ 
+        <!-- Kisan Sathi -->
+        <a href="https://kisansathi.vercel.app/" target="_blank" class="work-item" data-reveal="right" data-reveal-delay="4" data-tilt style="text-decoration:none; color:inherit; display:block">
+          <div class="work-item-num">03</div>
+          <div class="work-item-name">Kisan Sathi</div>
+          <div class="work-item-desc">Smart farming assistant with AI crop recommendations for rural India.</div>
+          <div class="work-item-tags">
+            <span class="chip">Python</span>
+            <span class="chip">AI</span>
+          </div>
+        </a>
+
+        <!-- IVR System -->
+        <a href="tel:04041893915" class="work-item" data-reveal="up" data-reveal-delay="5" data-tilt style="text-decoration:none; color:inherit; display:block">
+          <div class="work-item-num">04</div>
+          <div class="work-item-name">IVR System</div>
+          <div class="work-item-desc">Voice-based agricultural assistant. Call and get AI crop advice instantly via phone.</div>
+          <div class="work-item-tags">
+            <span class="chip">IVR System</span>
+            <span class="chip">Twilio</span>
+            <span class="chip">Voice AI</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SNAPSHOT -->
+  <section class="services-snap">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0" data-reveal="up">
+        <div>
+          <div class="eyebrow">What I Offer</div>
+          <h2 class="heading">Services</h2>
+        </div>
+        <p style="font-size:15px;color:var(--fg2);max-width:300px;text-align:right;line-height:1.7">
+          From concept to deployment — I help bring ideas to life.
+        </p>
+      </div>
+      <div class="services-row">
+        <div class="service-item" data-reveal="up" data-reveal-delay="1">
+          <span class="si-icon"><i class="fa-solid fa-globe"></i></span>
+          <div class="si-name">Website Dev</div>
+          <div class="si-desc">Full-stack websites with clean code and scalable architecture.</div>
+        </div>
+        <div class="service-item" data-reveal="up" data-reveal-delay="2">
+          <span class="si-icon"><i class="fa-solid fa-palette"></i></span>
+          <div class="si-name">UI Design</div>
+          <div class="si-desc">Pixel-perfect, responsive interfaces with smooth interactions.</div>
+        </div>
+        <div class="service-item" data-reveal="up" data-reveal-delay="3">
+          <span class="si-icon"><i class="fa-solid fa-robot"></i></span>
+          <div class="si-name">AI Projects</div>
+          <div class="si-desc">Integrate AI — recommendations, detection, automation — into apps.</div>
+        </div>
+        <div class="service-item" data-reveal="up" data-reveal-delay="4">
+          <span class="si-icon"><i class="fa-solid fa-bolt"></i></span>
+          <div class="si-name">Custom Tools</div>
+          <div class="si-desc">Dashboards and web utilities tailored to your workflow.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner-inner">
+        <div class="cta-big" data-reveal="blur">
+          Let's build something <em>great</em> together.
+        </div>
+        <p class="cta-p" data-reveal="up" data-reveal-delay="2">
+          I'm actively looking for internships and freelance projects. If you have an idea or an opportunity, let's talk.
+        </p>
+        <div class="cta-btns" data-reveal="up" data-reveal-delay="4">
+          <a href="contact" class="btn btn-fill" data-transition data-magnetic>Get in Touch <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="about"   class="btn btn-ghost" data-transition>Learn More</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="nav-logo">SHI<em style="color:var(--accent);font-style:normal">V</em>A</div>
+    <div class="footer-copy">Built with <i class="fa-solid fa-heart" style="color:var(--accent);font-size:10px"></i> and passion by Shiva · © 2025</div>
+    <nav class="footer-nav">
+      <a href="about" data-transition>About</a>
+      <a href="projects" data-transition>Projects</a>
+      <a href="contact" data-transition>Contact</a>
+    </nav>
+
+  </footer>
+
+  </div></div>
+
+  </div></div>
+
+  <script src="shared.js"></script>
+</body>
+</html>

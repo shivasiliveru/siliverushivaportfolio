@@ -1,0 +1,26 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Node/dependency directories (if added in the future)
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

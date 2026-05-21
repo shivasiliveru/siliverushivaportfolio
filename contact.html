@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Contact — Shiva</title>
+  <meta name="description" content="Get in touch with Shiva for internship opportunities, freelance projects, or collaborations."/>
+  
+  <!-- Open Graph / SEO -->
+  <meta property="og:title" content="Contact — Shiva"/>
+  <meta property="og:description" content="Reach out to Shiva for any inquiries or collaborations."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://shiva-portfolio-project.vercel.app/contact"/>
+
+  <link rel="icon" type="image/png" href="portfolioFavicon.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    /* Page fills viewport */
+    .contact-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 64px 1fr auto;
+    }
+
+    .contact-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 64px - 80px);
+    }
+
+    /* Left panel */
+    .contact-left {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 80px 60px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .contact-left-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 0% 100%, color-mix(in srgb,var(--accent) 8%, transparent), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, color-mix(in srgb,var(--accent2) 5%, transparent), transparent 50%);
+      pointer-events: none;
+    }
+    .contact-left-content { position: relative; z-index: 1; }
+
+    .contact-big-title {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 7vw, 96px);
+      letter-spacing: 0.04em; line-height: 0.92;
+      color: var(--fg);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .cbt-line {
+      display: block;
+      animation: line-up 1s var(--ease) both;
+    }
+    .cbt-line:nth-child(2) { animation-delay: 0.12s; color: var(--accent); }
+    .cbt-line:nth-child(3) { animation-delay: 0.24s; }
+    @keyframes line-up { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
+
+    .contact-intro {
+      font-size: 17px; color: var(--fg2); line-height: 1.8;
+      max-width: 440px; margin-bottom: 48px;
+      animation: fade-up 1s var(--ease) 0.5s both;
+    }
+    @keyframes fade-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+    .contact-links { display: flex; flex-direction: column; gap: 12px; }
+
+    .contact-link-item {
+      display: flex; align-items: center; gap: 16px;
+      background: color-mix(in srgb, var(--bg3) 60%, transparent);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 20px;
+      text-decoration: none; color: var(--fg);
+      transition: all var(--t-med);
+      cursor: none;
+    }
+    .contact-link-item:hover {
+      border-color: var(--border2);
+      transform: translateX(6px);
+      background: var(--bg3);
+    }
+    .cli-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .cli-text { flex: 1; }
+    .cli-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg3); margin-bottom: 2px; }
+    .cli-value { font-size: 14px; font-weight: 500; }
+    .cli-arrow { color: var(--fg3); font-size: 16px; transition: color var(--t-fast); }
+    .contact-link-item:hover .cli-arrow { color: var(--accent); }
+
+    /* Availability bar */
+    .avail-strip {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 40px;
+      background: color-mix(in srgb, #4ade80 8%, transparent);
+      border: 1px solid color-mix(in srgb, #4ade80 20%, transparent);
+      padding: 12px 18px;
+      border-radius: 10px;
+    }
+    .avail-dot {
+      width: 8px; height: 8px;
+      background: #4ade80; border-radius: 50%;
+      box-shadow: 0 0 0 0 color-mix(in srgb, #4ade80 50%, transparent);
+      animation: avail-pulse 2s ease infinite;
+      flex-shrink: 0;
+    }
+    @keyframes avail-pulse {
+      0%  { box-shadow: 0 0 0 0   color-mix(in srgb, #4ade80 50%, transparent); }
+      70% { box-shadow: 0 0 0 10px color-mix(in srgb, #4ade80 0%,  transparent); }
+      100%{ box-shadow: 0 0 0 0   color-mix(in srgb, #4ade80 0%,  transparent); }
+    }
+    .avail-text { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #4ade80; }
+
+    /* Right panel — form */
+    .contact-right {
+      background: var(--bg);
+      padding: 80px 60px;
+      display: flex; align-items: center;
+    }
+
+    .form-wrap { width: 100%; max-width: 480px; }
+
+    .form-header { margin-bottom: 40px; }
+    .form-header h2 {
+      font-family: var(--font-display);
+      font-size: 36px; letter-spacing: 0.03em;
+      margin-bottom: 8px;
+    }
+    .form-header p { font-size: 15px; color: var(--fg2); }
+
+    .form-row { margin-bottom: 22px; }
+    .form-row label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--fg3); margin-bottom: 8px;
+    }
+    .form-row input, .form-row textarea, .form-row select {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: var(--font-body);
+      font-size: 15px; color: var(--fg);
+      outline: none;
+      transition: border-color var(--t-fast), background var(--t-fast);
+      resize: vertical;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 3%, var(--bg2));
+    }
+    .form-row textarea { min-height: 120px; }
+    .form-row input::placeholder, .form-row textarea::placeholder { color: var(--fg3); }
+
+    .form-row select option { background: var(--bg2); color: var(--fg); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-submit {
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      font-weight: 600;
+      cursor: none;
+      transition: transform var(--t-fast), box-shadow var(--t-fast);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-top: 8px;
+    }
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+    .form-submit.sent {
+      background: #4ade80;
+      pointer-events: none;
+    }
+
+    /* Resume download */
+    .resume-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 60px;
+    }
+    .resume-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 40px;
+    }
+    .resume-text h3 {
+      font-family: var(--font-display);
+      font-size: 36px; letter-spacing: 0.03em;
+      color: var(--fg); margin-bottom: 8px;
+    }
+    .resume-text p { font-size: 15px; color: var(--fg2); max-width: 500px; line-height: 1.7; }
+    .resume-highlights {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .rh { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--fg2); }
+    .rh em { font-style: normal; font-size: 16px; }
+
+    @media(max-width:900px){
+      .contact-main { grid-template-columns: 1fr; }
+      .contact-left, .contact-right { padding: 60px 24px; }
+      .resume-section { padding: 60px 24px; }
+      .resume-inner { flex-direction: column; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="contact">
+  <div class="grain"></div>
+  <div id="cursor"></div>
+  <div id="cursor-trail"></div>
+  <div id="progress-bar"></div>
+  <div id="page-overlay"></div>
+
+  <div id="loader">
+    <div class="loader-name"><span>S</span><span>H</span><span>I</span><span>V</span><span>A</span></div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+    <div class="loader-sub">Let's connect...</div>
+  </div>
+
+  <nav id="nav">
+    <a href="/" class="nav-logo" data-transition>SHI<em>V</em>A</a>
+    <ul class="nav-links">
+      <li><a href="/"              class="nav-link" data-transition>Home</a></li>
+      <li><a href="about"          class="nav-link" data-transition>About</a></li>
+      <li><a href="skills"         class="nav-link" data-transition>Skills</a></li>
+      <li><a href="projects"       class="nav-link" data-transition>Projects</a></li>
+      <li><a href="experience"     class="nav-link" data-transition>Experience</a></li>
+      <li><a href="contact"        class="nav-link active">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn"><i class="fa-solid fa-circle-half-stroke theme-icon"></i></button>
+      <button class="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/"              data-transition>Home</a>
+    <a href="about"          data-transition>About</a>
+    <a href="skills"         data-transition>Skills</a>
+    <a href="projects"       data-transition>Projects</a>
+    <a href="experience"     data-transition>Experience</a>
+    <a href="contact">Contact</a>
+  </div>
+
+
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+
+  <!-- CONTACT MAIN -->
+  <main class="contact-main">
+    <!-- LEFT -->
+    <div class="contact-left" data-reveal="left">
+      <div class="contact-left-bg"></div>
+      <div class="contact-left-content">
+        <div class="eyebrow" style="animation:fade-up 0.8s var(--ease) 0.1s both;opacity:0">Get In Touch</div>
+        <h1 class="contact-big-title">
+          <span class="cbt-line">Let's</span>
+          <span class="cbt-line">build</span>
+          <span class="cbt-line">something.</span>
+        </h1>
+
+        <p class="contact-intro">
+          Whether you have an internship opportunity, a freelance project, or just want to talk tech — I'm always open to a conversation. Send a message and I'll get back within 24 hours.
+        </p>
+
+        <div class="contact-links" data-reveal="left" data-reveal-delay="2">
+          <a href="mailto:shivasiliverushiva@gmail.com" class="contact-link-item">
+            <div class="cli-icon" style="background:color-mix(in srgb,var(--accent) 12%,transparent)"><i class="fa-solid fa-envelope"></i></div>
+            <div class="cli-text">
+              <div class="cli-label">Email</div>
+              <div class="cli-value">shivasiliverushiva@gmail.com</div>
+            </div>
+            <span class="cli-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+          <a href="https://www.linkedin.com/in/siliveru-shiva/" target="_blank" class="contact-link-item">
+            <div class="cli-icon" style="background:color-mix(in srgb,var(--accent2) 12%,transparent)"><i class="fa-solid fa-briefcase"></i></div>
+            <div class="cli-text">
+              <div class="cli-label">LinkedIn</div>
+              <div class="cli-value">linkedin.com/in/siliveru-shiva/</div>
+            </div>
+            <span class="cli-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+          <a href="https://github.com/shivasiliveru" target="_blank" class="contact-link-item">
+            <div class="cli-icon" style="background:color-mix(in srgb,var(--fg) 8%,transparent)"><i class="fa-brands fa-github"></i></div>
+            <div class="cli-text">
+              <div class="cli-label">GitHub</div>
+              <div class="cli-value">github.com/shivasiliveru</div>
+            </div>
+            <span class="cli-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+        </div>
+ 
+        <div class="avail-strip" data-reveal="left" data-reveal-delay="4">
+          <span class="avail-dot"></span>
+          <span class="avail-text">Currently available for internships & freelance</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="contact-right">
+      <div class="form-wrap" data-reveal="right">
+        <div class="form-header">
+          <h2>Send a Message</h2>
+          <p>Fill in the form — no fluff, just a direct line to me.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label>First Name</label>
+            <input type="text" placeholder="John" id="firstName"/>
+          </div>
+          <div class="form-row">
+            <label>Last Name</label>
+            <input type="text" placeholder="Doe" id="lastName"/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Email Address</label>
+          <input type="email" placeholder="john@example.com" id="email"/>
+        </div>
+
+        <div class="form-row">
+          <label>What's this about?</label>
+          <select id="subject">
+            <option value="">Select a topic...</option>
+            <option>Internship Opportunity</option>
+            <option>Freelance Project</option>
+            <option>Collaboration</option>
+            <option>Just saying hi</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Message</label>
+          <textarea placeholder="Tell me about the project, opportunity, or just introduce yourself..." id="message"></textarea>
+        </div>
+
+        <button class="form-submit" id="submitBtn">
+          <span id="btnText">Send Message</span>
+          <span id="btnArrow"><i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- RESUME -->
+  <section class="resume-section">
+    <div class="container">
+      <div class="resume-inner" data-reveal="scale">
+        <div class="resume-text">
+          <h3>Download My Resume</h3>
+          <p>Want the full picture? My resume covers technical skills, projects, certifications, and academic background — everything you need to evaluate what I bring to the table.</p>
+          <div class="resume-highlights">
+            <div class="rh"><i class="fa-solid fa-tools"></i> Full Stack Skills</div>
+            <div class="rh"><i class="fa-solid fa-robot"></i> AI/ML Projects</div>
+            <div class="rh"><i class="fa-solid fa-graduation-cap"></i> B.Tech CSE @ JNTU</div>
+            <div class="rh"><i class="fa-solid fa-certificate"></i> IBM Certified</div>
+          </div>
+        </div>
+        <a href="shiva siliveru  resume.pdf" class="btn btn-fill" data-magnetic target="_blank" data-reveal="scale" data-reveal-delay="2">
+          Download Resume PDF <i class="fa-solid fa-file-pdf"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="nav-logo">SHI<em style="color:var(--accent);font-style:normal">V</em>A</div>
+    <div class="footer-copy">Built with <i class="fa-solid fa-heart" style="color:var(--accent);font-size:10px"></i> and passion by Shiva · © 2025</div>
+    <nav class="footer-nav">
+      <a href="/" data-transition>Home</a>
+      <a href="projects" data-transition>Projects</a>
+      <a href="about" data-transition>About</a>
+    </nav>
+
+  </footer>
+
+  </div></div>
+
+  <script src="shared.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const submitBtn = document.getElementById('submitBtn');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', () => {
+          console.log('Submit clicked');
+          const firstName = document.getElementById('firstName').value;
+          const lastName = document.getElementById('lastName').value;
+          const email = document.getElementById('email').value;
+          const subject = document.getElementById('subject').value;
+          const message = document.getElementById('message').value;
+          
+          const fullName = `${firstName} ${lastName}`.trim();
+          console.log('Sending to:', fullName, email);
+          
+          const mailtoLink = `mailto:shivasiliverushiva@gmail.com?subject=${encodeURIComponent(subject + ' - ' + fullName)}&body=${encodeURIComponent(message + '\n\nFrom: ' + email)}`;
+          window.location.href = mailtoLink;
+
+          const btn = document.getElementById('submitBtn');
+          const text = document.getElementById('btnText');
+          const arrow = document.getElementById('btnArrow');
+          btn.classList.add('sent');
+          text.textContent = 'Opening Email...';
+          arrow.textContent = '✓';
+          
+          setTimeout(() => {
+            btn.classList.remove('sent');
+            text.textContent = 'Send Message';
+            arrow.textContent = '→';
+            btn.style.background = '';
+          }, 3000);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

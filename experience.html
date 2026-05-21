@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Experience — Shiva</title>
+  <meta name="description" content="View the professional journey, certifications, and academic background of Shiva."/>
+  
+  <!-- Open Graph / SEO -->
+  <meta property="og:title" content="Experience — Shiva"/>
+  <meta property="og:description" content="Journey through the certifications and experiences of Shiva."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://shiva-portfolio-project.vercel.app/experience"/>
+
+  <link rel="icon" type="image/png" href="portfolioFavicon.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    .page-hero {
+      min-height: 50vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 100px 0 60px; position: relative; overflow: hidden;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, var(--border2) 1px, transparent 0);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, transparent, black 40%, black 80%, transparent);
+    }
+    .page-hero-content { position: relative; z-index: 1; }
+    .ph-title {
+      font-family: var(--font-display);
+      font-size: clamp(60px, 10vw, 130px);
+      letter-spacing: 0.04em; line-height: 0.9;
+      overflow: hidden;
+    }
+    .ph-title-inner { animation: line-up 1s var(--ease) 0.2s both; display: block; }
+    @keyframes line-up { from{transform:translateY(110%);opacity:0} to{transform:translateY(0);opacity:1} }
+
+    /* ── TIMELINE ── */
+    .timeline-section { padding: 80px 0 100px; }
+
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    /* Vertical line */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 24px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--border2) 10%, var(--border2) 90%, transparent);
+    }
+
+    .tl-item {
+      position: relative;
+      padding-left: 72px;
+      margin-bottom: 48px;
+    }
+    .tl-item:last-child { margin-bottom: 0; }
+
+    /* Dot */
+    .tl-dot {
+      position: absolute;
+      left: 16px; top: 20px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--bg2);
+      border: 2px solid var(--border2);
+      transition: border-color var(--t-med), background var(--t-med);
+    }
+    .tl-item:hover .tl-dot,
+    .tl-item.featured .tl-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+
+    .tl-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 28px 32px;
+      transition: border-color var(--t-med), transform var(--t-med);
+    }
+    .tl-item:hover .tl-card {
+      border-color: var(--border2);
+      transform: translateX(4px);
+    }
+    .tl-item.featured .tl-card { border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+    .tl-meta {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .tl-icon { font-size: 22px; }
+    .tl-type {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      padding: 4px 12px; border-radius: var(--r-full);
+    }
+    .tl-date {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg3);
+      margin-left: auto;
+    }
+
+    .tl-title {
+      font-family: var(--font-display);
+      font-size: 24px; letter-spacing: 0.03em;
+      color: var(--fg); margin-bottom: 8px;
+    }
+    .tl-desc {
+      font-size: 14px; color: var(--fg2); line-height: 1.7;
+    }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+    /* ── ACHIEVEMENTS GRID ── */
+    .achievements-section { padding: 80px 0; background: var(--bg2); }
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .ach-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 32px;
+      transition: all var(--t-med);
+    }
+    .ach-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .ach-icon { font-size: 36px; margin-bottom: 16px; }
+    .ach-title {
+      font-family: var(--font-display);
+      font-size: 22px; letter-spacing: 0.03em;
+      color: var(--fg); margin-bottom: 10px;
+    }
+    .ach-desc { font-size: 14px; color: var(--fg2); line-height: 1.65; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { padding: 80px 0 100px; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .testimonial {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--t-med);
+    }
+    .testimonial:hover { border-color: var(--border2); }
+    .testimonial::before {
+      content: '"';
+      position: absolute; top: 16px; right: 28px;
+      font-family: Georgia, serif;
+      font-size: 120px;
+      color: var(--border);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .testimonial-body {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 18px; line-height: 1.75;
+      color: var(--fg2);
+      margin-bottom: 28px;
+      position: relative; z-index: 1;
+    }
+    .testimonial-author {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .ta-avatar {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--bg);
+    }
+    .ta-name {
+      font-family: var(--font-display);
+      font-size: 18px; letter-spacing: 0.03em;
+      color: var(--fg);
+    }
+    .ta-role { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg3); }
+
+    @media(max-width:900px){
+      .achievements-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="experience">
+  <div class="grain"></div>
+  <div id="cursor"></div>
+  <div id="cursor-trail"></div>
+  <div id="progress-bar"></div>
+  <div id="page-overlay"></div>
+
+  <div id="loader">
+    <div class="loader-name"><span>S</span><span>H</span><span>I</span><span>V</span><span>A</span></div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+    <div class="loader-sub">Loading journey...</div>
+  </div>
+
+  <nav id="nav">
+    <a href="/" class="nav-logo" data-transition>SHI<em>V</em>A</a>
+    <ul class="nav-links">
+      <li><a href="/"              class="nav-link" data-transition>Home</a></li>
+      <li><a href="about"          class="nav-link" data-transition>About</a></li>
+      <li><a href="skills"         class="nav-link" data-transition>Skills</a></li>
+      <li><a href="projects"       class="nav-link" data-transition>Projects</a></li>
+      <li><a href="experience"     class="nav-link active">Experience</a></li>
+      <li><a href="contact"        class="nav-link" data-transition>Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn"><i class="fa-solid fa-circle-half-stroke theme-icon"></i></button>
+      <a href="contact" class="nav-cta" data-transition>Let's Talk <i class="fa-solid fa-arrow-right"></i></a>
+      <button class="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/"              data-transition>Home</a>
+    <a href="about"          data-transition>About</a>
+    <a href="skills"         data-transition>Skills</a>
+    <a href="projects"       data-transition>Projects</a>
+    <a href="experience">Experience</a>
+    <a href="contact"        data-transition>Contact</a>
+  </div>
+
+
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="hero-bg-text" aria-hidden="true" data-parallax="0.05" data-parallax-x="0.15" data-parallax-base="translate(-50%, -50%)" style="opacity:0.1">HISTORY</div>
+    <div class="container page-hero-content">
+      <div class="eyebrow" style="animation:fade-in-up 0.8s var(--ease) 0.1s both;opacity:0">The Journey</div>
+      <h1 class="ph-title">Experience &<br><span style="color:var(--accent)">Achievements</span></h1>
+      <p class="body-text" style="max-width:480px;margin-top:20px;animation:fade-in-up 1s var(--ease) 0.5s both;opacity:0">
+        Every project, expo, certification, and late-night debugging session has shaped who I am as a developer.
+      </p>
+    </div>
+  </section>
+  <style>@keyframes fade-in-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}</style>
+
+  <div class="hr"></div>
+
+  <!-- TIMELINE -->
+  <section class="timeline-section">
+    <div class="container">
+      <div data-reveal="up" style="margin-bottom:56px">
+        <div class="eyebrow">Timeline</div>
+        <h2 class="heading">My Journey</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item featured" data-reveal="left">
+          <div class="tl-dot"></div>
+          <div class="tl-card" data-reveal="left" data-reveal-delay="2">
+            <div class="tl-meta">
+              <span class="tl-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+              <span class="tl-type">Education</span>
+              <span class="tl-date">2022 — Present</span>
+            </div>
+            <div class="tl-title">B.Tech CSE — JNTU</div>
+            <div class="tl-desc">Pursuing Bachelor of Technology in Computer Science & Engineering under JNTU. Core focus areas include algorithms, data structures, database systems, AI/ML fundamentals, and software engineering.</div>
+            <div class="tl-tags">
+              <span class="chip">Computer Science</span>
+              <span class="chip">AI/ML Coursework</span>
+              <span class="chip">JNTU</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item" data-reveal="left" data-reveal-delay="1">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-meta">
+              <span class="tl-icon"><i class="fa-solid fa-certificate"></i></span>
+              <span class="tl-type">Certification</span>
+              <span class="tl-date">2024</span>
+            </div>
+            <div class="tl-title">IBM AI Fundamentals</div>
+            <div class="tl-desc">Completed IBM's AI Fundamentals certification covering machine learning concepts, neural network basics, model training and evaluation, and responsible AI principles in industry contexts.</div>
+            <div class="tl-tags">
+              <span class="chip">IBM</span>
+              <span class="chip">Machine Learning</span>
+              <span class="chip">Neural Networks</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item" data-reveal="left" data-reveal-delay="2">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-meta">
+              <span class="tl-icon"><i class="fa-solid fa-award"></i></span>
+              <span class="tl-type">Project Expo</span>
+              <span class="tl-date">2024</span>
+            </div>
+            <div class="tl-title">College Project Exhibition</div>
+            <div class="tl-desc">Showcased Kareer Guide and Kisan Sathi at the department project expo. Presented to a panel of faculty and industry guests — received recognition for social impact and AI integration in both projects.</div>
+            <div class="tl-tags">
+              <span class="chip">Kareer Guide</span>
+              <span class="chip">Kisan Sathi</span>
+              <span class="chip">Recognition</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item" data-reveal="left" data-reveal-delay="3">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-meta">
+              <span class="tl-icon"><i class="fa-solid fa-bolt"></i></span>
+              <span class="tl-type">Hackathon</span>
+              <span class="tl-date">2024</span>
+            </div>
+            <div class="tl-title">Hackathon Participation</div>
+            <div class="tl-desc">Competed in college-level hackathons, building rapid prototypes under tight time constraints. Strengthened skills in problem decomposition, fast prototyping, and cross-functional team collaboration.</div>
+            <div class="tl-tags">
+              <span class="chip">Rapid Prototyping</span>
+              <span class="chip">Teamwork</span>
+              <span class="chip">Problem Solving</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item" data-reveal="left" data-reveal-delay="4">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-meta">
+              <span class="tl-icon"><i class="fa-solid fa-rocket"></i></span>
+              <span class="tl-type">Projects</span>
+              <span class="tl-date">2023 — Present</span>
+            </div>
+            <div class="tl-title">5+ Projects Shipped</div>
+            <div class="tl-desc">Built and deployed multiple real-world projects independently — covering web development, AI integration, computer vision, and social impact technology. Each project shipped end-to-end from idea to working product.</div>
+            <div class="tl-tags">
+              <span class="chip">Full Stack</span>
+              <span class="chip">AI/ML</span>
+              <span class="chip">Self-Directed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section class="achievements-section">
+    <div class="container">
+      <div data-reveal="up">
+        <div class="eyebrow">Highlights</div>
+        <h2 class="heading">Key Achievements</h2>
+      </div>
+      <div class="achievements-grid">
+        <div class="ach-card" data-reveal="scale" data-reveal-delay="1">
+          <div class="ach-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="ach-title">Project Expo Recognition</div>
+          <div class="ach-desc">Presented two projects — Kareer Guide and Kisan Sathi — at the departmental project exhibition to industry professionals and received appreciation for real-world relevance and technical implementation.</div>
+        </div>
+        <div class="ach-card" data-reveal="scale" data-reveal-delay="2">
+          <div class="ach-icon"><i class="fa-solid fa-robot"></i></div>
+          <div class="ach-title">IBM AI Fundamentals</div>
+          <div class="ach-desc">Earned IBM's verified AI Fundamentals certificate, covering machine learning, deep learning basics, and practical AI implementation — one of the most recognized beginner AI credentials.</div>
+        </div>
+        <div class="ach-card" data-reveal="scale" data-reveal-delay="3">
+          <div class="ach-icon"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="ach-title">Social Impact Tech</div>
+          <div class="ach-desc">Designed Kisan Sathi specifically for rural farming communities in India — incorporating IVR voice support for low-literacy users and bilingual crop recommendations based on local conditions.</div>
+        </div>
+        <div class="ach-card" data-reveal="scale" data-reveal-delay="4">
+          <div class="ach-icon"><i class="fa-solid fa-bolt"></i></div>
+          <div class="ach-title">Hackathon Competitor</div>
+          <div class="ach-desc">Participated in time-boxed hackathons, consistently delivering working prototypes. Sharpened rapid decision-making, prioritization under pressure, and cross-disciplinary teamwork.</div>
+        </div>
+        <div class="ach-card" data-reveal="scale" data-reveal-delay="5">
+          <div class="ach-icon"><i class="fa-solid fa-globe"></i></div>
+          <div class="ach-title">Full Stack Delivery</div>
+          <div class="ach-desc">Independently shipped 5+ full-stack and AI-integrated applications from concept to deployment — managing design, development, database design, and API integration entirely solo.</div>
+        </div>
+        <div class="ach-card" data-reveal="scale" data-reveal-delay="6">
+          <div class="ach-icon"><i class="fa-solid fa-book"></i></div>
+          <div class="ach-title">Continuous Learning</div>
+          <div class="ach-desc">Actively pursuing courses in AI/ML, modern web development, and cloud platforms. Learning is not an obligation but a habit — always one course, one tutorial, or one project ahead of where I was yesterday.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div class="container">
+      <div data-reveal="up">
+        <div class="eyebrow">Testimonials</div>
+        <h2 class="heading">What Others Say</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial" data-reveal="left">
+          <p class="testimonial-body">
+            Shiva's approach to building Kareer Guide genuinely impressed me. He didn't just code a feature list — he thought carefully about the problem, designed a smart solution, and executed it cleanly. The kind of developer who brings more to a project than just technical output.
+          </p>
+          <div class="testimonial-author">
+            <div class="ta-avatar" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">R</div>
+            <div>
+              <div class="ta-name">Ravi M.</div>
+              <div class="ta-role">Project Guide · CSE Department</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial" data-reveal="right" data-reveal-delay="2">
+          <p class="testimonial-body">
+            Working alongside Shiva during our project expo was a great experience. He's quick to learn, easy to collaborate with, and has an eye for making things work in the real world. His AI emotion detection project stood out as one of the most technically ambitious of the batch.
+          </p>
+          <div class="testimonial-author">
+            <div class="ta-avatar" style="background:linear-gradient(135deg,var(--accent3),#f0a060)">P</div>
+            <div>
+              <div class="ta-name">Pranav K.</div>
+              <div class="ta-role">B.Tech Peer · Collaborator</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="nav-logo">SHI<em style="color:var(--accent);font-style:normal">V</em>A</div>
+    <div class="footer-copy">Built with <i class="fa-solid fa-heart" style="color:var(--accent);font-size:10px"></i> and passion by Shiva · © 2025</div>
+    <nav class="footer-nav">
+      <a href="projects" data-transition>Projects</a>
+      <a href="skills" data-transition>Skills</a>
+      <a href="contact" data-transition>Contact</a>
+    </nav>
+
+  </footer>
+
+  </div></div>
+
+  <script src="shared.js"></script>
+</body>
+</html>
