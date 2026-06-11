@@ -214,22 +214,61 @@ const ProgressBar = (() => {
   return { init };
 })();
 
-// ── NAV HIDE ON SCROLL ──────────────────────────
+// ── NAV HIDE ON SCROLL + CURSOR PILL ────────────
 const NavManager = (() => {
   let last = 0;
+
+  function initCursor(nav) {
+    const cursor = nav.querySelector('.nav-cursor');
+    const links = nav.querySelectorAll('.nav-link');
+    const list = nav.querySelector('.nav-links');
+    if (!cursor || !list) return;
+
+    function moveCursor(el) {
+      const rect = el.getBoundingClientRect();
+      const parentRect = list.getBoundingClientRect();
+      cursor.style.left = (rect.left - parentRect.left) + 'px';
+      cursor.style.width = rect.width + 'px';
+      cursor.classList.add('show');
+    }
+
+    function hideCursor() {
+      cursor.classList.remove('show');
+    }
+
+    links.forEach(link => {
+      link.addEventListener('mouseenter', () => moveCursor(link));
+      link.addEventListener('mouseleave', () => {
+        const active = list.querySelector('.nav-link.active');
+        if (active) {
+          moveCursor(active);
+        } else {
+          hideCursor();
+        }
+      });
+    });
+
+    // Set initial cursor position on the active link
+    const active = list.querySelector('.nav-link.active');
+    if (active) {
+      requestAnimationFrame(() => {
+        moveCursor(active);
+        cursor.classList.add('show');
+      });
+    }
+  }
+
   function init() {
     const nav = document.getElementById('nav');
     if (!nav) return;
+
+    initCursor(nav);
+
     window.addEventListener('scroll', () => {
       const cur = window.scrollY;
       if (cur > last && cur > 80) nav.classList.add('hide');
       else nav.classList.remove('hide');
       last = cur;
-
-      // Active link
-      document.querySelectorAll('.nav-link[data-page]').forEach(link => {
-        link.classList.toggle('active', link.dataset.page === document.body.dataset.page);
-      });
     });
   }
   return { init };
