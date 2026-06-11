@@ -628,15 +628,19 @@ body.cursor-hover #cursor { width: 24px; height: 24px; opacity: 0.6; }
   border-bottom: 1px solid var(--border);
 }
 .mobile-menu a:hover { color: var(--accent); }
+.mobile-menu .mobile-resume {
+  color: var(--accent);
+  font-size: 36px;
+}
 
 @media(max-width:900px){
   #nav { padding: 0 16px; height: 58px; }
   .nav-logo { font-size: 18px; }
-  .nav-links { display: none; }
+  .nav-center { display: none; }
   .menu-btn { display: flex; width: 32px; height: 32px; margin-left: auto; }
   .nav-right { gap: 6px; }
   .nav-cta { padding: 7px 12px; font-size: 10px; }
-  .resume-nav-btn { display: none !important; } /* Hide resume in nav for mobile */
+  .resume-nav-btn { display: none !important; }
   #footer { flex-direction: column; text-align: center; padding: 32px 24px; }
 
   /* Restore default cursor on mobile */
