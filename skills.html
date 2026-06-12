@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Skills — Shiva</title>
   <meta name="description" content="Technical toolkit and expertise of Shiva — from Web Development to AI & ML."/>
-  
-  <!-- Open Graph / SEO -->
   <meta property="og:title" content="Skills — Shiva"/>
   <meta property="og:description" content="Explore the technical proficiency and toolkit of Shiva."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://shiva-portfolio-project.vercel.app/skills"/>
-
   <link rel="icon" type="image/png" href="portfolioFavicon.png"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="shared.css"/>
@@ -51,184 +48,121 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── SKILLS BODY ── */
-    .skills-body { padding: 80px 0 100px; }
-
-    /* Category tabs */
-    .skill-tabs {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      margin-bottom: 56px;
-    }
-    .skill-tab {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--r-full);
-      padding: 10px 22px;
-      font-family: var(--font-mono);
-      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--fg2);
-      transition: all var(--t-fast);
-      cursor: none;
-    }
-    .skill-tab:hover, .skill-tab.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: var(--bg);
+    /* ── SKIPER16 STICKY CARD STACK ── */
+    .card-stack {
+      position: relative;
+      width: 100%;
+      padding-top: 50vh;
+      padding-bottom: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg);
     }
 
-    /* Main skills layout */
-    .skills-main {
+    .card-stack-intro {
+      position: absolute;
+      left: 50%;
+      top: 10%;
+      transform: translateX(-50%);
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: start;
+      justify-items: center;
+      gap: 24px;
+      text-align: center;
+      z-index: 1;
+    }
+    .card-stack-intro span {
+      position: relative;
+      max-width: 14ch;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1.4;
+      color: var(--fg3);
+    }
+    .card-stack-intro span::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      height: 64px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--fg3), var(--accent));
     }
 
-    /* Left: categories */
-    .skill-categories { display: flex; flex-direction: column; gap: 16px; }
+    .sticky-card-wrap {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100vh;
+    }
 
-    .skill-cat-block {
-      background: var(--bg2);
-      border: 1px solid var(--border);
+    .sticky-card {
+      width: 500px;
+      max-width: 90vw;
       border-radius: var(--r-lg);
       overflow: hidden;
+      transform-origin: top center;
+      will-change: transform;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 16px;
       transition: border-color var(--t-med);
     }
-    .skill-cat-block:hover { border-color: var(--border2); }
-    .skill-cat-block.open { border-color: var(--accent); }
-
-    .skill-cat-header {
-      display: flex; align-items: center;
-      justify-content: space-between;
-      padding: 22px 28px;
-      cursor: none;
-      transition: background var(--t-fast);
-    }
-    .skill-cat-header:hover { background: var(--bg3); }
-
-    .skill-cat-title-row {
-      display: flex; align-items: center; gap: 14px;
-    }
-    .skill-cat-icon { font-size: 24px; }
-    .skill-cat-name {
-      font-family: var(--font-display);
-      font-size: 22px; letter-spacing: 0.03em;
-      color: var(--fg);
-    }
-    .skill-cat-count {
-      font-family: var(--font-mono);
-      font-size: 10px; letter-spacing: 0.12em;
-      color: var(--fg3); text-transform: uppercase;
-    }
-    .skill-cat-chevron {
-      font-size: 12px; color: var(--fg3);
-      transition: transform var(--t-med);
-    }
-    .skill-cat-block.open .skill-cat-chevron { transform: rotate(180deg); }
-
-    .skill-cat-body {
-      padding: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s var(--ease), padding 0.3s ease;
-    }
-    .skill-cat-block.open .skill-cat-body {
-      padding: 0 28px 24px;
-      max-height: 400px;
-    }
-
-    .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-pill {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: var(--r-full);
-      font-size: 13px; color: var(--fg2);
-      transition: all var(--t-fast);
-      position: relative; overflow: hidden;
-    }
-    .skill-pill:hover {
+    .sticky-card:hover {
       border-color: var(--accent);
+    }
+
+    .sticky-card-icon {
+      font-size: 56px;
       color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 8%, transparent);
     }
-
-    /* Right: skill bars */
-    .skill-bars-panel {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 36px;
-      position: sticky;
-      top: 84px;
+    .sticky-card-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
     }
-    .skill-bars-panel h3 {
+    .sticky-card-title {
       font-family: var(--font-display);
-      font-size: 28px; letter-spacing: 0.03em;
-      margin-bottom: 32px;
+      font-size: 36px;
+      letter-spacing: 0.04em;
       color: var(--fg);
+      line-height: 1.1;
     }
-
-    .skill-bar-row {
-      margin-bottom: 22px;
+    .sticky-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 12px;
     }
-    .skill-bar-row:last-child { margin-bottom: 0; }
-    .skill-bar-meta {
-      display: flex; justify-content: space-between;
-      margin-bottom: 8px;
-    }
-    .skill-bar-name { font-size: 14px; color: var(--fg); font-weight: 500; }
-    .skill-bar-pct {
-      font-family: var(--font-mono);
-      font-size: 11px; color: var(--accent);
-    }
-    .skill-bar-track {
-      height: 4px;
-      background: var(--bg3);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .skill-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 4px;
-      width: 0;
-      transition: width 1.2s var(--ease);
-    }
-    .skill-bar-fill.animate { width: var(--w); }
-
-    /* Tool grid */
-    .tools-section { padding: 80px 0; background: var(--bg2); }
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 12px;
-      margin-top: 48px;
-    }
-    .tool-card {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 16px;
-      text-align: center;
-      transition: all var(--t-med);
-    }
-    .tool-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      background: color-mix(in srgb, var(--accent) 5%, var(--bg3));
-    }
-    .tool-icon { font-size: 28px; margin-bottom: 10px; }
-    .tool-name {
-      font-family: var(--font-mono);
-      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--fg2);
+    .sticky-card-tags .chip {
+      font-size: 9px;
+      padding: 4px 10px;
     }
 
     @media(max-width:900px){
-      .skills-main { grid-template-columns: 1fr; }
-      .skill-bars-panel { position: relative; top: 0; }
-      .tools-grid { grid-template-columns: repeat(3,1fr); }
+      .sticky-card { padding: 32px 24px; }
+      .sticky-card-title { font-size: 28px; }
+      .sticky-card-icon { font-size: 40px; }
+    }
+    @media(max-width:480px){
+      .sticky-card { padding: 24px 16px; }
+      .sticky-card-title { font-size: 22px; }
+      .sticky-card-icon { font-size: 32px; }
     }
   </style>
 </head>
@@ -295,165 +229,82 @@
 
   <div class="hr"></div>
 
-  <!-- SKILLS BODY -->
-  <section class="skills-body">
-    <div class="container">
-      <div class="skills-main">
-        <!-- Left: categories -->
-        <div class="skill-categories" data-reveal="scale">
-          <!-- Frontend -->
-          <div class="skill-cat-block open">
-            <div class="skill-cat-header" onclick="toggleCat(this.parentElement)">
-              <div class="skill-cat-title-row">
-                <span class="skill-cat-icon"><i class="fa-solid fa-palette"></i></span>
-                <div>
-                  <div class="skill-cat-name">Frontend</div>
-                  <div class="skill-cat-count">4 Skills</div>
-                </div>
-              </div>
-              <span class="skill-cat-chevron"><i class="fa-solid fa-chevron-down"></i></span>
-            </div>
-            <div class="skill-cat-body">
-              <div class="skill-pills">
-                <span class="skill-pill">HTML5</span>
-                <span class="skill-pill">CSS3</span>
-                <span class="skill-pill">JavaScript</span>
-                <span class="skill-pill">Responsive Design</span>
-                <span class="skill-pill">Tailwind CSS</span>
-                <span class="skill-pill">DOM Manipulation</span>
-              </div>
-            </div>
-          </div>
+  <!-- STICKY CARD STACK -->
+  <section id="cardStack" class="card-stack">
+    <div class="card-stack-intro">
+      <span>scroll down to see my skills</span>
+    </div>
 
-          <!-- Backend -->
-          <div class="skill-cat-block">
-            <div class="skill-cat-header" onclick="toggleCat(this.parentElement)">
-              <div class="skill-cat-title-row">
-                <span class="skill-cat-icon"><i class="fa-solid fa-gears"></i></span>
-                <div>
-                  <div class="skill-cat-name">Backend</div>
-                  <div class="skill-cat-count">4 Skills</div>
-                </div>
-              </div>
-              <span class="skill-cat-chevron"><i class="fa-solid fa-chevron-down"></i></span>
-            </div>
-            <div class="skill-cat-body">
-              <div class="skill-pills">
-                <span class="skill-pill">Python</span>
-                <span class="skill-pill">PHP</span>
-                <span class="skill-pill">MySQL</span>
-                <span class="skill-pill">REST APIs</span>
-                <span class="skill-pill">Server Logic</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- AI / ML -->
-          <div class="skill-cat-block">
-            <div class="skill-cat-header" onclick="toggleCat(this.parentElement)">
-              <div class="skill-cat-title-row">
-                <span class="skill-cat-icon"><i class="fa-solid fa-robot"></i></span>
-                <div>
-                  <div class="skill-cat-name">AI & ML</div>
-                  <div class="skill-cat-count">4 Skills</div>
-                </div>
-              </div>
-              <span class="skill-cat-chevron"><i class="fa-solid fa-chevron-down"></i></span>
-            </div>
-            <div class="skill-cat-body">
-              <div class="skill-pills">
-                <span class="skill-pill">OpenCV</span>
-                <span class="skill-pill">DeepFace</span>
-                <span class="skill-pill">Basic ML Models</span>
-                <span class="skill-pill">AI Integration</span>
-                <span class="skill-pill">Web Scraping</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tools -->
-          <div class="skill-cat-block">
-            <div class="skill-cat-header" onclick="toggleCat(this.parentElement)">
-              <div class="skill-cat-title-row">
-                <span class="skill-cat-icon"><i class="fa-solid fa-tools"></i></span>
-                <div>
-                  <div class="skill-cat-name">Tools & DevOps</div>
-                  <div class="skill-cat-count">4 Skills</div>
-                </div>
-              </div>
-              <span class="skill-cat-chevron"><i class="fa-solid fa-chevron-down"></i></span>
-            </div>
-            <div class="skill-cat-body">
-              <div class="skill-pills">
-                <span class="skill-pill">Git & GitHub</span>
-                <span class="skill-pill">VS Code</span>
-                <span class="skill-pill">XAMPP</span>
-                <span class="skill-pill">Postman</span>
-                <span class="skill-pill">API Testing</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: bars -->
-        <div data-reveal="blur">
-          <div class="skill-bars-panel" data-reveal="right" data-reveal-delay="2">
-            <h3>Proficiency</h3>
-
-            <div class="skill-bar-row">
-              <div class="skill-bar-meta"><span class="skill-bar-name">HTML / CSS</span><span class="skill-bar-pct">90%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" style="--w:90%"></div></div>
-            </div>
-            <div class="skill-bar-row">
-              <div class="skill-bar-meta"><span class="skill-bar-name">JavaScript</span><span class="skill-bar-pct">78%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" style="--w:78%"></div></div>
-            </div>
-            <div class="skill-bar-row">
-              <div class="skill-bar-meta"><span class="skill-bar-name">Python</span><span class="skill-bar-pct">82%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" style="--w:82%"></div></div>
-            </div>
-            <div class="skill-bar-row">
-              <div class="skill-bar-meta"><span class="skill-bar-name">PHP / MySQL</span><span class="skill-bar-pct">70%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" style="--w:70%"></div></div>
-            </div>
-            <div class="skill-bar-row">
-              <div class="skill-bar-meta"><span class="skill-bar-name">AI / ML</span><span class="skill-bar-pct">60%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" style="--w:60%"></div></div>
-            </div>
-            <div class="skill-bar-row">
-              <div class="skill-bar-meta"><span class="skill-bar-name">OpenCV / DeepFace</span><span class="skill-bar-pct">65%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" style="--w:65%"></div></div>
-            </div>
-            <div class="skill-bar-row">
-              <div class="skill-bar-meta"><span class="skill-bar-name">Git & Version Control</span><span class="skill-bar-pct">75%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" style="--w:75%"></div></div>
-            </div>
-          </div>
+    <div class="sticky-card-wrap" data-index="0">
+      <div class="sticky-card">
+        <div class="sticky-card-category">Category 1</div>
+        <div class="sticky-card-icon"><i class="fa-solid fa-palette"></i></div>
+        <div class="sticky-card-title">Frontend</div>
+        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
+          Building responsive, pixel-perfect interfaces with modern web technologies.
+        </p>
+        <div class="sticky-card-tags">
+          <span class="chip">HTML5</span>
+          <span class="chip">CSS3</span>
+          <span class="chip">JavaScript</span>
+          <span class="chip">Responsive Design</span>
+          <span class="chip">Tailwind CSS</span>
+          <span class="chip">DOM Manipulation</span>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- TOOLS GRID -->
-  <section class="tools-section">
-    <div class="container">
-      <div data-reveal="up">
-        <div class="eyebrow">Tools & Environment</div>
-        <h2 class="heading">My Toolkit</h2>
+    <div class="sticky-card-wrap" data-index="1">
+      <div class="sticky-card">
+        <div class="sticky-card-category">Category 2</div>
+        <div class="sticky-card-icon"><i class="fa-solid fa-gears"></i></div>
+        <div class="sticky-card-title">Backend</div>
+        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
+          Crafting robust server-side logic, APIs, and database-driven applications.
+        </p>
+        <div class="sticky-card-tags">
+          <span class="chip">Python</span>
+          <span class="chip">PHP</span>
+          <span class="chip">MySQL</span>
+          <span class="chip">REST APIs</span>
+          <span class="chip">Server Logic</span>
+        </div>
       </div>
-      <div class="tools-grid">
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="1"><div class="tool-icon"><i class="fa-brands fa-python"></i></div><div class="tool-name">Python</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="2"><div class="tool-icon"><i class="fa-solid fa-code"></i></div><div class="tool-name">VS Code</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="3"><div class="tool-icon"><i class="fa-brands fa-github"></i></div><div class="tool-name">GitHub</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="4"><div class="tool-icon"><i class="fa-solid fa-database"></i></div><div class="tool-name">MySQL</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="5"><div class="tool-icon"><i class="fa-solid fa-paper-plane"></i></div><div class="tool-name">Postman</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="6"><div class="tool-icon"><i class="fa-solid fa-server"></i></div><div class="tool-name">XAMPP</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="7"><div class="tool-icon"><i class="fa-solid fa-eye"></i></div><div class="tool-name">OpenCV</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="8"><div class="tool-icon"><i class="fa-brands fa-html5"></i></div><div class="tool-name">HTML5</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="9"><div class="tool-icon"><i class="fa-brands fa-css3-alt"></i></div><div class="tool-name">CSS3</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="10"><div class="tool-icon"><i class="fa-brands fa-js"></i></div><div class="tool-name">JavaScript</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="11"><div class="tool-icon"><i class="fa-brands fa-php"></i></div><div class="tool-name">PHP</div></div>
-        <div class="tool-card" data-reveal="scale" data-reveal-delay="12"><div class="tool-icon"><i class="fa-solid fa-robot"></i></div><div class="tool-name">DeepFace</div></div>
+    </div>
+
+    <div class="sticky-card-wrap" data-index="2">
+      <div class="sticky-card">
+        <div class="sticky-card-category">Category 3</div>
+        <div class="sticky-card-icon"><i class="fa-solid fa-robot"></i></div>
+        <div class="sticky-card-title">AI &amp; ML</div>
+        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
+          Integrating intelligence into applications — from computer vision to predictive models.
+        </p>
+        <div class="sticky-card-tags">
+          <span class="chip">OpenCV</span>
+          <span class="chip">DeepFace</span>
+          <span class="chip">Basic ML Models</span>
+          <span class="chip">AI Integration</span>
+          <span class="chip">Web Scraping</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sticky-card-wrap" data-index="3">
+      <div class="sticky-card">
+        <div class="sticky-card-category">Category 4</div>
+        <div class="sticky-card-icon"><i class="fa-solid fa-tools"></i></div>
+        <div class="sticky-card-title">Tools &amp; DevOps</div>
+        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
+          Streamlining development workflows with the right tools and practices.
+        </p>
+        <div class="sticky-card-tags">
+          <span class="chip">Git & GitHub</span>
+          <span class="chip">VS Code</span>
+          <span class="chip">XAMPP</span>
+          <span class="chip">Postman</span>
+          <span class="chip">API Testing</span>
+        </div>
       </div>
     </div>
   </section>
@@ -466,25 +317,60 @@
       <a href="experience" data-transition>Experience</a>
       <a href="contact" data-transition>Contact</a>
     </nav>
-
   </footer>
 
   </div></div>
 
   <script src="shared.js"></script>
   <script>
-    function toggleCat(block) {
-      block.classList.toggle('open');
-    }
+    (function(){
+      const stack = document.getElementById('cardStack');
+      if (!stack) return;
 
-    // Animate bars on scroll
-    const bars = document.querySelectorAll('.skill-bar-fill');
-    const barObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('animate'); barObs.unobserve(e.target); }
+      const wraps = stack.querySelectorAll('.sticky-card-wrap');
+      const cards = stack.querySelectorAll('.sticky-card');
+      const count = wraps.length;
+      if (count === 0) return;
+
+      // Each card gets a target scale based on its position
+      // Card 0 stays at 1, each subsequent card scales down more
+      const targetScales = [];
+      cards.forEach((card, i) => {
+        const ts = Math.max(0.5, 1 - (count - 1 - i) * 0.15);
+        targetScales[i] = ts;
       });
-    }, { threshold: 0.3 });
-    bars.forEach(b => barObs.observe(b));
+
+      function update() {
+        const scrollY = window.scrollY;
+        const stackTop = stack.offsetTop;
+        const stackHeight = stack.offsetHeight;
+        const viewH = window.innerHeight;
+
+        // Convert scroll into a 0-1 progress relative to the stack
+        const progress = Math.max(0, Math.min(1, (scrollY - stackTop + viewH * 0.3) / (stackHeight + viewH * 0.3)));
+
+        wraps.forEach((wrap, i) => {
+          const card = cards[i];
+          // Each card has its own range within the total progress
+          // Card i starts at i/count and ends at 1
+          const start = i / count;
+          const end = 1;
+          let p = (progress - start) / (end - start);
+          p = Math.max(0, Math.min(1, p));
+
+          // Scale from 1 down to target scale
+          const scale = 1 - (1 - targetScales[i]) * p;
+          card.style.transform = `scale(${scale})`;
+        });
+
+        requestAnimationFrame(update);
+      }
+
+      requestAnimationFrame(update);
+
+      // Recalculate on resize
+      window.addEventListener('resize', () => {});
+    })();
   </script>
 </body>
 </html>
