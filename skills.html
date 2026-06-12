@@ -48,22 +48,21 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── SKIPER16 STICKY CARD STACK ── */
-    .card-stack {
+    /* ── SKIPER34 STICKY CARD STACK ── */
+    .skills-stack {
       position: relative;
-      width: 100%;
-      padding-top: 50vh;
-      padding-bottom: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: var(--bg);
+      gap: 10vh;
+      width: 100%;
+      padding: 50vh 16px 0;
     }
 
-    .card-stack-intro {
+    .skills-intro {
       position: absolute;
       left: 50%;
-      top: 10%;
+      top: 96px;
       transform: translateX(-50%);
       display: grid;
       justify-items: center;
@@ -71,7 +70,7 @@
       text-align: center;
       z-index: 1;
     }
-    .card-stack-intro span {
+    .skills-intro span {
       position: relative;
       max-width: 14ch;
       font-family: var(--font-mono);
@@ -81,7 +80,7 @@
       line-height: 1.4;
       color: var(--fg3);
     }
-    .card-stack-intro span::after {
+    .skills-intro span::after {
       content: '';
       position: absolute;
       left: 50%;
@@ -91,78 +90,101 @@
       background: linear-gradient(to bottom, var(--fg3), var(--accent));
     }
 
-    .sticky-card-wrap {
+    .sc-card-wrap {
       position: sticky;
-      top: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      top: 10vh;
       width: 100%;
-      height: 100vh;
-    }
-
-    .sticky-card {
-      width: 500px;
-      max-width: 90vw;
+      max-width: 900px;
+      height: 80vh;
       border-radius: var(--r-lg);
       overflow: hidden;
-      transform-origin: top center;
       will-change: transform;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      padding: 48px 40px;
+    }
+
+    .sc-card {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--r-lg);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       gap: 16px;
-      transition: border-color var(--t-med);
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
     }
-    .sticky-card:hover {
-      border-color: var(--accent);
+    .sc-card-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
     }
-
-    .sticky-card-icon {
-      font-size: 56px;
-      color: var(--accent);
+    .sc-card-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      max-width: 500px;
     }
-    .sticky-card-category {
+    .sc-card-icon {
+      font-size: 64px;
+      color: var(--bg);
+      opacity: 0.9;
+    }
+    .sc-card-category {
       font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 4px;
+      color: var(--bg);
+      opacity: 0.7;
     }
-    .sticky-card-title {
+    .sc-card-title {
       font-family: var(--font-display);
-      font-size: 36px;
+      font-size: 42px;
       letter-spacing: 0.04em;
-      color: var(--fg);
+      color: var(--bg);
       line-height: 1.1;
     }
-    .sticky-card-tags {
+    .sc-card-desc {
+      font-size: 14px;
+      color: var(--bg);
+      opacity: 0.8;
+      line-height: 1.7;
+    }
+    .sc-card-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       justify-content: center;
-      margin-top: 12px;
+      margin-top: 8px;
     }
-    .sticky-card-tags .chip {
+    .sc-card-tags .chip {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: var(--bg);
       font-size: 9px;
       padding: 4px 10px;
+      backdrop-filter: blur(4px);
+    }
+    .sc-card-tags .chip:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: var(--bg);
     }
 
     @media(max-width:900px){
-      .sticky-card { padding: 32px 24px; }
-      .sticky-card-title { font-size: 28px; }
-      .sticky-card-icon { font-size: 40px; }
+      .sc-card { padding: 32px 24px; }
+      .sc-card-title { font-size: 32px; }
+      .sc-card-icon { font-size: 48px; }
     }
     @media(max-width:480px){
-      .sticky-card { padding: 24px 16px; }
-      .sticky-card-title { font-size: 22px; }
-      .sticky-card-icon { font-size: 32px; }
+      .sc-card { padding: 24px 16px; }
+      .sc-card-title { font-size: 24px; }
+      .sc-card-icon { font-size: 36px; }
+      .sc-card-desc { font-size: 12px; }
     }
   </style>
 </head>
@@ -229,81 +251,85 @@
 
   <div class="hr"></div>
 
-  <!-- STICKY CARD STACK -->
-  <section id="cardStack" class="card-stack">
-    <div class="card-stack-intro">
+  <!-- STICKY CARD STACK (SKIPER34) -->
+  <section id="skillsStack" class="skills-stack">
+    <div class="skills-intro">
       <span>scroll down to see my skills</span>
     </div>
 
-    <div class="sticky-card-wrap" data-index="0">
-      <div class="sticky-card">
-        <div class="sticky-card-category">Category 1</div>
-        <div class="sticky-card-icon"><i class="fa-solid fa-palette"></i></div>
-        <div class="sticky-card-title">Frontend</div>
-        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
-          Building responsive, pixel-perfect interfaces with modern web technologies.
-        </p>
-        <div class="sticky-card-tags">
-          <span class="chip">HTML5</span>
-          <span class="chip">CSS3</span>
-          <span class="chip">JavaScript</span>
-          <span class="chip">Responsive Design</span>
-          <span class="chip">Tailwind CSS</span>
-          <span class="chip">DOM Manipulation</span>
+    <div class="sc-card-wrap" data-index="0">
+      <div class="sc-card">
+        <div class="sc-card-bg" style="background:linear-gradient(135deg,#667eea,#764ba2)"></div>
+        <div class="sc-card-content">
+          <div class="sc-card-category">Category 1</div>
+          <div class="sc-card-icon"><i class="fa-solid fa-palette"></i></div>
+          <div class="sc-card-title">Frontend</div>
+          <div class="sc-card-desc">Building responsive, pixel-perfect interfaces with modern web technologies.</div>
+          <div class="sc-card-tags">
+            <span class="chip">HTML5</span>
+            <span class="chip">CSS3</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">Responsive Design</span>
+            <span class="chip">Tailwind CSS</span>
+            <span class="chip">DOM Manipulation</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="sticky-card-wrap" data-index="1">
-      <div class="sticky-card">
-        <div class="sticky-card-category">Category 2</div>
-        <div class="sticky-card-icon"><i class="fa-solid fa-gears"></i></div>
-        <div class="sticky-card-title">Backend</div>
-        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
-          Crafting robust server-side logic, APIs, and database-driven applications.
-        </p>
-        <div class="sticky-card-tags">
-          <span class="chip">Python</span>
-          <span class="chip">PHP</span>
-          <span class="chip">MySQL</span>
-          <span class="chip">REST APIs</span>
-          <span class="chip">Server Logic</span>
+    <div class="sc-card-wrap" data-index="1">
+      <div class="sc-card">
+        <div class="sc-card-bg" style="background:linear-gradient(135deg,#f093fb,#f5576c)"></div>
+        <div class="sc-card-content">
+          <div class="sc-card-category">Category 2</div>
+          <div class="sc-card-icon"><i class="fa-solid fa-gears"></i></div>
+          <div class="sc-card-title">Backend</div>
+          <div class="sc-card-desc">Crafting robust server-side logic, APIs, and database-driven applications.</div>
+          <div class="sc-card-tags">
+            <span class="chip">Python</span>
+            <span class="chip">PHP</span>
+            <span class="chip">MySQL</span>
+            <span class="chip">REST APIs</span>
+            <span class="chip">Server Logic</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="sticky-card-wrap" data-index="2">
-      <div class="sticky-card">
-        <div class="sticky-card-category">Category 3</div>
-        <div class="sticky-card-icon"><i class="fa-solid fa-robot"></i></div>
-        <div class="sticky-card-title">AI &amp; ML</div>
-        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
-          Integrating intelligence into applications — from computer vision to predictive models.
-        </p>
-        <div class="sticky-card-tags">
-          <span class="chip">OpenCV</span>
-          <span class="chip">DeepFace</span>
-          <span class="chip">Basic ML Models</span>
-          <span class="chip">AI Integration</span>
-          <span class="chip">Web Scraping</span>
+    <div class="sc-card-wrap" data-index="2">
+      <div class="sc-card">
+        <div class="sc-card-bg" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"></div>
+        <div class="sc-card-content">
+          <div class="sc-card-category">Category 3</div>
+          <div class="sc-card-icon"><i class="fa-solid fa-robot"></i></div>
+          <div class="sc-card-title">AI &amp; ML</div>
+          <div class="sc-card-desc">Integrating intelligence into applications — from computer vision to predictive models.</div>
+          <div class="sc-card-tags">
+            <span class="chip">OpenCV</span>
+            <span class="chip">DeepFace</span>
+            <span class="chip">Basic ML Models</span>
+            <span class="chip">AI Integration</span>
+            <span class="chip">Web Scraping</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="sticky-card-wrap" data-index="3">
-      <div class="sticky-card">
-        <div class="sticky-card-category">Category 4</div>
-        <div class="sticky-card-icon"><i class="fa-solid fa-tools"></i></div>
-        <div class="sticky-card-title">Tools &amp; DevOps</div>
-        <p class="body-text" style="font-size:14px;color:var(--fg2);line-height:1.7;max-width:400px">
-          Streamlining development workflows with the right tools and practices.
-        </p>
-        <div class="sticky-card-tags">
-          <span class="chip">Git & GitHub</span>
-          <span class="chip">VS Code</span>
-          <span class="chip">XAMPP</span>
-          <span class="chip">Postman</span>
-          <span class="chip">API Testing</span>
+    <div class="sc-card-wrap" data-index="3">
+      <div class="sc-card">
+        <div class="sc-card-bg" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"></div>
+        <div class="sc-card-content">
+          <div class="sc-card-category">Category 4</div>
+          <div class="sc-card-icon"><i class="fa-solid fa-tools"></i></div>
+          <div class="sc-card-title">Tools &amp; DevOps</div>
+          <div class="sc-card-desc">Streamlining development workflows with the right tools and practices.</div>
+          <div class="sc-card-tags">
+            <span class="chip">Git & GitHub</span>
+            <span class="chip">VS Code</span>
+            <span class="chip">XAMPP</span>
+            <span class="chip">Postman</span>
+            <span class="chip">API Testing</span>
+          </div>
         </div>
       </div>
     </div>
@@ -324,52 +350,64 @@
   <script src="shared.js"></script>
   <script>
     (function(){
-      const stack = document.getElementById('cardStack');
+      const stack = document.getElementById('skillsStack');
       if (!stack) return;
 
-      const wraps = stack.querySelectorAll('.sticky-card-wrap');
-      const cards = stack.querySelectorAll('.sticky-card');
+      const wraps = stack.querySelectorAll('.sc-card-wrap');
+      const cards = stack.querySelectorAll('.sc-card');
       const count = wraps.length;
       if (count === 0) return;
 
-      // Each card gets a target scale based on its position
-      // Card 0 stays at 1, each subsequent card scales down more
-      const targetScales = [];
+      // Each card has a unique gradient accent for the inner rotation
+      const cardData = [];
       cards.forEach((card, i) => {
-        const ts = Math.max(0.5, 1 - (count - 1 - i) * 0.15);
-        targetScales[i] = ts;
+        // Store initial state
+        cardData[i] = {
+          entered: false,
+          maxScrollY: 0,
+        };
       });
 
       function update() {
         const scrollY = window.scrollY;
-        const stackTop = stack.offsetTop;
-        const stackHeight = stack.offsetHeight;
         const viewH = window.innerHeight;
-
-        // Convert scroll into a 0-1 progress relative to the stack
-        const progress = Math.max(0, Math.min(1, (scrollY - stackTop + viewH * 0.3) / (stackHeight + viewH * 0.3)));
 
         wraps.forEach((wrap, i) => {
           const card = cards[i];
-          // Each card has its own range within the total progress
-          // Card i starts at i/count and ends at 1
-          const start = i / count;
-          const end = 1;
-          let p = (progress - start) / (end - start);
-          p = Math.max(0, Math.min(1, p));
+          const rect = wrap.getBoundingClientRect();
+          const wrapTop = rect.top + scrollY;
 
-          // Scale from 1 down to target scale
-          const scale = 1 - (1 - targetScales[i]) * p;
-          card.style.transform = `scale(${scale})`;
+          // When card enters view
+          if (!cardData[i].entered && rect.top < viewH * 0.9) {
+            cardData[i].entered = true;
+            cardData[i].maxScrollY = scrollY;
+          }
+
+          if (cardData[i].entered) {
+            // Progress: 0 when entered, 1 after scrolling 10000px
+            const scrollPast = scrollY - cardData[i].maxScrollY;
+            const progress = Math.max(0, Math.min(1, scrollPast / 10000));
+
+            // Scale from 1 to 0
+            const scale = 1 - progress;
+            // Rotate from 0 to 100deg
+            const rotate = progress * 100;
+            // Counter-rotate inner content
+            const negateRotate = -rotate;
+
+            card.style.transform = `scale(${scale}) rotate(${rotate}deg)`;
+            // Apply counter-rotation to the content only (not bg)
+            const content = card.querySelector('.sc-card-content');
+            if (content) {
+              content.style.transform = `rotate(${negateRotate}deg)`;
+            }
+          }
         });
 
         requestAnimationFrame(update);
       }
 
       requestAnimationFrame(update);
-
-      // Recalculate on resize
-      window.addEventListener('resize', () => {});
     })();
   </script>
 </body>
