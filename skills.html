@@ -48,143 +48,273 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── SKIPER34 STICKY CARD STACK ── */
-    .skills-stack {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10vh;
+    /* ── NEUMORPHIC SKILL CARDS ── */
+    .skills-section {
       width: 100%;
-      padding: 50vh 16px 0;
-    }
-
-    .skills-intro {
-      position: absolute;
-      left: 50%;
-      top: 96px;
-      transform: translateX(-50%);
-      display: grid;
-      justify-items: center;
-      gap: 24px;
-      text-align: center;
-      z-index: 1;
-    }
-    .skills-intro span {
-      position: relative;
-      max-width: 14ch;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      line-height: 1.4;
-      color: var(--fg3);
-    }
-    .skills-intro span::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 100%;
-      height: 64px;
-      width: 1px;
-      background: linear-gradient(to bottom, var(--fg3), var(--accent));
-    }
-
-    .sc-card-wrap {
-      position: sticky;
-      top: 10vh;
-      width: 100%;
-      max-width: 900px;
-      height: 80vh;
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      will-change: transform;
-    }
-
-    .sc-card {
-      width: 100%;
-      height: 100%;
-      border-radius: var(--r-lg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 16px;
-      padding: 48px 40px;
+      padding: 80px 0 100px;
       position: relative;
       overflow: hidden;
     }
-    .sc-card-bg {
+
+    .skills-grid-bg {
       position: absolute;
       inset: 0;
-      z-index: 0;
+      opacity: 0.06;
+      pointer-events: none;
     }
-    .sc-card-content {
+    .skills-grid-bg div {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(156,163,175,0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(156,163,175,0.4) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(40px, 40px); }
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 56px;
       position: relative;
       z-index: 1;
+    }
+
+    .skill-profile-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--r-lg);
+      padding: 32px;
+      background: var(--bg2);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.2), -6px -6px 12px rgba(255,255,255,0.04);
+      transition: all 0.5s var(--ease);
+      border: 1px solid var(--border);
+    }
+    .skill-profile-card:hover {
+      transform: scale(1.02) translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 10px 10px 20px rgba(0,0,0,0.25), -10px -10px 20px rgba(255,255,255,0.06);
+    }
+
+    .spc-top {
       display: flex;
-      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .spc-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
       align-items: center;
-      gap: 12px;
-      max-width: 500px;
+      justify-content: center;
+      font-size: 32px;
+      background: var(--bg3);
+      box-shadow: inset 4px 4px 6px rgba(0,0,0,0.2), inset -4px -4px 6px rgba(255,255,255,0.04);
+      transition: all 0.5s var(--ease);
+      position: relative;
     }
-    .sc-card-icon {
-      font-size: 64px;
+    .skill-profile-card:hover .spc-avatar {
+      transform: scale(1.1);
+      box-shadow: inset 4px 4px 6px rgba(0,0,0,0.2), inset -4px -4px 6px rgba(255,255,255,0.04), 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    .spc-status {
+      position: relative;
+    }
+    .spc-status-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--bg2);
+      transition: all 0.3s var(--ease);
+    }
+    .spc-status.active .spc-status-dot {
+      background: var(--accent);
+    }
+    .spc-status.active .spc-status-ping {
+      position: absolute;
+      inset: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: ping 2s ease infinite;
+      opacity: 0.3;
+    }
+    @keyframes ping {
+      0% { transform: scale(1); opacity: 0.3; }
+      70% { transform: scale(2); opacity: 0; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+    .skill-profile-card:hover .spc-status-dot {
+      transform: scale(1.25);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 50%, transparent);
+    }
+
+    .spc-badge {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
       color: var(--bg);
-      opacity: 0.9;
+      transition: all 0.3s var(--ease);
     }
-    .sc-card-category {
+    .skill-profile-card:hover .spc-badge {
+      transform: scale(1.1) rotate(12deg);
+      box-shadow: 0 0 15px color-mix(in srgb, var(--accent2) 50%, transparent);
+    }
+
+    .spc-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      margin-bottom: 4px;
+      transition: color 0.3s var(--ease);
+    }
+    .skill-profile-card:hover .spc-name {
+      color: var(--accent);
+    }
+
+    .spc-role {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-bottom: 8px;
+    }
+    .spc-followers {
+      font-size: 12px;
+      color: var(--fg3);
+      transition: color 0.3s var(--ease);
+    }
+    .skill-profile-card:hover .spc-followers {
+      color: var(--accent2);
+    }
+
+    .spc-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .spc-tag {
+      border-radius: var(--r-full);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
       font-family: var(--font-mono);
       font-size: 10px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--bg);
-      opacity: 0.7;
+      color: var(--fg2);
+      transition: all 0.3s var(--ease);
     }
-    .sc-card-title {
-      font-family: var(--font-display);
-      font-size: 42px;
-      letter-spacing: 0.04em;
-      color: var(--bg);
-      line-height: 1.1;
+    .spc-tag.highlight {
+      color: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 40%, transparent);
     }
-    .sc-card-desc {
-      font-size: 14px;
-      color: var(--bg);
-      opacity: 0.8;
-      line-height: 1.7;
+    .skill-profile-card:hover .spc-tag.highlight {
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 20%, transparent);
     }
-    .sc-card-tags {
+
+    .spc-skills {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .spc-skill {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: var(--r-full);
+      font-size: 12px;
+      color: var(--fg2);
+      transition: all 0.3s var(--ease);
+    }
+    .spc-skill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 8%, transparent);
+      transform: scale(1.05);
+    }
+
+    .spc-actions {
+      display: flex;
+      gap: 10px;
       margin-top: 8px;
     }
-    .sc-card-tags .chip {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: var(--bg);
-      font-size: 9px;
-      padding: 4px 10px;
-      backdrop-filter: blur(4px);
+    .spc-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: var(--r-full);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--fg2);
+      transition: all 0.3s var(--ease);
     }
-    .sc-card-tags .chip:hover {
-      border-color: rgba(255,255,255,0.5);
+    .spc-btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
       color: var(--bg);
+    }
+    .spc-btn:hover {
+      transform: scale(0.95);
+    }
+    .spc-btn.primary:hover {
+      box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    .spc-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--r-lg);
+      border: 1.5px solid var(--accent);
+      opacity: 0;
+      transition: opacity 0.5s var(--ease);
+      pointer-events: none;
+    }
+    .skill-profile-card:hover .spc-glow {
+      opacity: 1;
     }
 
     @media(max-width:900px){
-      .sc-card { padding: 32px 24px; }
-      .sc-card-title { font-size: 32px; }
-      .sc-card-icon { font-size: 48px; }
+      .skills-grid { grid-template-columns: 1fr; gap: 24px; }
+      .skill-profile-card { padding: 24px; }
+      .spc-name { font-size: 22px; }
+      .spc-avatar { width: 56px; height: 56px; font-size: 24px; }
     }
     @media(max-width:480px){
-      .sc-card { padding: 24px 16px; }
-      .sc-card-title { font-size: 24px; }
-      .sc-card-icon { font-size: 36px; }
-      .sc-card-desc { font-size: 12px; }
+      .skills-grid { gap: 16px; margin-top: 32px; }
+      .skill-profile-card { padding: 20px; }
+      .spc-name { font-size: 20px; }
+      .spc-avatar { width: 48px; height: 48px; font-size: 20px; }
+      .spc-skills { gap: 4px; }
+      .spc-skill { font-size: 10px; padding: 4px 8px; }
+      .spc-actions { flex-direction: column; }
     }
   </style>
 </head>
@@ -251,84 +381,134 @@
 
   <div class="hr"></div>
 
-  <!-- STICKY CARD STACK (SKIPER34) -->
-  <section id="skillsStack" class="skills-stack">
-    <div class="skills-intro">
-      <span>scroll down to see my skills</span>
-    </div>
+  <!-- NEUMORPHIC SKILL CARDS -->
+  <section class="skills-section">
+    <div class="skills-grid-bg"><div></div></div>
+    <div class="container">
+      <div data-reveal="up">
+        <div class="eyebrow">Skill Categories</div>
+        <h2 class="heading">What I Know</h2>
+      </div>
 
-    <div class="sc-card-wrap" data-index="0">
-      <div class="sc-card">
-        <div class="sc-card-bg" style="background:linear-gradient(135deg,#667eea,#764ba2)"></div>
-        <div class="sc-card-content">
-          <div class="sc-card-category">Category 1</div>
-          <div class="sc-card-icon"><i class="fa-solid fa-palette"></i></div>
-          <div class="sc-card-title">Frontend</div>
-          <div class="sc-card-desc">Building responsive, pixel-perfect interfaces with modern web technologies.</div>
-          <div class="sc-card-tags">
-            <span class="chip">HTML5</span>
-            <span class="chip">CSS3</span>
-            <span class="chip">JavaScript</span>
-            <span class="chip">Responsive Design</span>
-            <span class="chip">Tailwind CSS</span>
-            <span class="chip">DOM Manipulation</span>
+      <div class="skills-grid">
+        <!-- Frontend -->
+        <div class="skill-profile-card" data-reveal="scale" data-reveal-delay="1">
+          <div class="spc-glow"></div>
+          <div class="spc-top">
+            <div class="spc-avatar" style="color:var(--accent)"><i class="fa-solid fa-palette"></i></div>
+            <div class="spc-status active">
+              <div class="spc-status-ping"></div>
+              <div class="spc-status-dot"></div>
+            </div>
+          </div>
+          <div class="spc-badge"><i class="fa-solid fa-star"></i></div>
+          <div class="spc-name">Frontend</div>
+          <div class="spc-role">UI & Experience</div>
+          <div class="spc-followers">8+ skills mastered</div>
+          <div class="spc-tags">
+            <span class="spc-tag highlight">Premium</span>
+          </div>
+          <div class="spc-skills">
+            <span class="spc-skill">HTML5</span>
+            <span class="spc-skill">CSS3</span>
+            <span class="spc-skill">JavaScript</span>
+            <span class="spc-skill">Responsive Design</span>
+            <span class="spc-skill">Tailwind CSS</span>
+            <span class="spc-skill">DOM Manipulation</span>
+          </div>
+          <div class="spc-actions">
+            <button class="spc-btn primary"><i class="fa-solid fa-plus"></i> Follow</button>
+            <button class="spc-btn"><i class="fa-solid fa-message"></i> Message</button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="sc-card-wrap" data-index="1">
-      <div class="sc-card">
-        <div class="sc-card-bg" style="background:linear-gradient(135deg,#f093fb,#f5576c)"></div>
-        <div class="sc-card-content">
-          <div class="sc-card-category">Category 2</div>
-          <div class="sc-card-icon"><i class="fa-solid fa-gears"></i></div>
-          <div class="sc-card-title">Backend</div>
-          <div class="sc-card-desc">Crafting robust server-side logic, APIs, and database-driven applications.</div>
-          <div class="sc-card-tags">
-            <span class="chip">Python</span>
-            <span class="chip">PHP</span>
-            <span class="chip">MySQL</span>
-            <span class="chip">REST APIs</span>
-            <span class="chip">Server Logic</span>
+        <!-- Backend -->
+        <div class="skill-profile-card" data-reveal="scale" data-reveal-delay="2">
+          <div class="spc-glow"></div>
+          <div class="spc-top">
+            <div class="spc-avatar" style="color:var(--accent2)"><i class="fa-solid fa-gears"></i></div>
+            <div class="spc-status active">
+              <div class="spc-status-ping"></div>
+              <div class="spc-status-dot"></div>
+            </div>
+          </div>
+          <div class="spc-badge"><i class="fa-solid fa-star"></i></div>
+          <div class="spc-name">Backend</div>
+          <div class="spc-role">Server & Database</div>
+          <div class="spc-followers">5+ skills mastered</div>
+          <div class="spc-tags">
+            <span class="spc-tag highlight">Pro</span>
+          </div>
+          <div class="spc-skills">
+            <span class="spc-skill">Python</span>
+            <span class="spc-skill">PHP</span>
+            <span class="spc-skill">MySQL</span>
+            <span class="spc-skill">REST APIs</span>
+            <span class="spc-skill">Server Logic</span>
+          </div>
+          <div class="spc-actions">
+            <button class="spc-btn primary"><i class="fa-solid fa-plus"></i> Follow</button>
+            <button class="spc-btn"><i class="fa-solid fa-message"></i> Message</button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="sc-card-wrap" data-index="2">
-      <div class="sc-card">
-        <div class="sc-card-bg" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"></div>
-        <div class="sc-card-content">
-          <div class="sc-card-category">Category 3</div>
-          <div class="sc-card-icon"><i class="fa-solid fa-robot"></i></div>
-          <div class="sc-card-title">AI &amp; ML</div>
-          <div class="sc-card-desc">Integrating intelligence into applications — from computer vision to predictive models.</div>
-          <div class="sc-card-tags">
-            <span class="chip">OpenCV</span>
-            <span class="chip">DeepFace</span>
-            <span class="chip">Basic ML Models</span>
-            <span class="chip">AI Integration</span>
-            <span class="chip">Web Scraping</span>
+        <!-- AI & ML -->
+        <div class="skill-profile-card" data-reveal="scale" data-reveal-delay="3">
+          <div class="spc-glow"></div>
+          <div class="spc-top">
+            <div class="spc-avatar" style="color:var(--accent3)"><i class="fa-solid fa-robot"></i></div>
+            <div class="spc-status active">
+              <div class="spc-status-ping"></div>
+              <div class="spc-status-dot"></div>
+            </div>
+          </div>
+          <div class="spc-badge"><i class="fa-solid fa-star"></i></div>
+          <div class="spc-name">AI &amp; ML</div>
+          <div class="spc-role">Intelligence & Vision</div>
+          <div class="spc-followers">5+ skills mastered</div>
+          <div class="spc-tags">
+            <span class="spc-tag highlight">Advanced</span>
+          </div>
+          <div class="spc-skills">
+            <span class="spc-skill">OpenCV</span>
+            <span class="spc-skill">DeepFace</span>
+            <span class="spc-skill">Basic ML Models</span>
+            <span class="spc-skill">AI Integration</span>
+            <span class="spc-skill">Web Scraping</span>
+          </div>
+          <div class="spc-actions">
+            <button class="spc-btn primary"><i class="fa-solid fa-plus"></i> Follow</button>
+            <button class="spc-btn"><i class="fa-solid fa-message"></i> Message</button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="sc-card-wrap" data-index="3">
-      <div class="sc-card">
-        <div class="sc-card-bg" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"></div>
-        <div class="sc-card-content">
-          <div class="sc-card-category">Category 4</div>
-          <div class="sc-card-icon"><i class="fa-solid fa-tools"></i></div>
-          <div class="sc-card-title">Tools &amp; DevOps</div>
-          <div class="sc-card-desc">Streamlining development workflows with the right tools and practices.</div>
-          <div class="sc-card-tags">
-            <span class="chip">Git & GitHub</span>
-            <span class="chip">VS Code</span>
-            <span class="chip">XAMPP</span>
-            <span class="chip">Postman</span>
-            <span class="chip">API Testing</span>
+        <!-- Tools & DevOps -->
+        <div class="skill-profile-card" data-reveal="scale" data-reveal-delay="4">
+          <div class="spc-glow"></div>
+          <div class="spc-top">
+            <div class="spc-avatar" style="color:#4ade80"><i class="fa-solid fa-tools"></i></div>
+            <div class="spc-status active">
+              <div class="spc-status-ping"></div>
+              <div class="spc-status-dot"></div>
+            </div>
+          </div>
+          <div class="spc-badge"><i class="fa-solid fa-star"></i></div>
+          <div class="spc-name">Tools &amp; DevOps</div>
+          <div class="spc-role">Workflow & Automation</div>
+          <div class="spc-followers">5+ skills mastered</div>
+          <div class="spc-tags">
+            <span class="spc-tag highlight">Essential</span>
+          </div>
+          <div class="spc-skills">
+            <span class="spc-skill">Git & GitHub</span>
+            <span class="spc-skill">VS Code</span>
+            <span class="spc-skill">XAMPP</span>
+            <span class="spc-skill">Postman</span>
+            <span class="spc-skill">API Testing</span>
+          </div>
+          <div class="spc-actions">
+            <button class="spc-btn primary"><i class="fa-solid fa-plus"></i> Follow</button>
+            <button class="spc-btn"><i class="fa-solid fa-message"></i> Message</button>
           </div>
         </div>
       </div>
@@ -348,67 +528,5 @@
   </div></div>
 
   <script src="shared.js"></script>
-  <script>
-    (function(){
-      const stack = document.getElementById('skillsStack');
-      if (!stack) return;
-
-      const wraps = stack.querySelectorAll('.sc-card-wrap');
-      const cards = stack.querySelectorAll('.sc-card');
-      const count = wraps.length;
-      if (count === 0) return;
-
-      // Each card has a unique gradient accent for the inner rotation
-      const cardData = [];
-      cards.forEach((card, i) => {
-        // Store initial state
-        cardData[i] = {
-          entered: false,
-          maxScrollY: 0,
-        };
-      });
-
-      function update() {
-        const scrollY = window.scrollY;
-        const viewH = window.innerHeight;
-
-        wraps.forEach((wrap, i) => {
-          const card = cards[i];
-          const rect = wrap.getBoundingClientRect();
-          const wrapTop = rect.top + scrollY;
-
-          // When card enters view
-          if (!cardData[i].entered && rect.top < viewH * 0.9) {
-            cardData[i].entered = true;
-            cardData[i].maxScrollY = scrollY;
-          }
-
-          if (cardData[i].entered) {
-            // Progress: 0 when entered, 1 after scrolling 10000px
-            const scrollPast = scrollY - cardData[i].maxScrollY;
-            const progress = Math.max(0, Math.min(1, scrollPast / 10000));
-
-            // Scale from 1 to 0
-            const scale = 1 - progress;
-            // Rotate from 0 to 100deg
-            const rotate = progress * 100;
-            // Counter-rotate inner content
-            const negateRotate = -rotate;
-
-            card.style.transform = `scale(${scale}) rotate(${rotate}deg)`;
-            // Apply counter-rotation to the content only (not bg)
-            const content = card.querySelector('.sc-card-content');
-            if (content) {
-              content.style.transform = `rotate(${negateRotate}deg)`;
-            }
-          }
-        });
-
-        requestAnimationFrame(update);
-      }
-
-      requestAnimationFrame(update);
-    })();
-  </script>
 </body>
 </html>
