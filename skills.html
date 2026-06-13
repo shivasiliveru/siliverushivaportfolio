@@ -514,24 +514,5 @@
   </div></div>
 
   <script src="shared.js"></script>
-  <script>
-    (function(){
-      const path = document.getElementById('scrollPath');
-      if (!path) return;
-      const length = path.getTotalLength();
-      path.style.strokeDasharray = length;
-      path.style.strokeDashoffset = length;
-
-      function update() {
-        const scrollY = window.scrollY;
-        const docH = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = Math.min(1, scrollY / docH);
-        path.style.strokeDashoffset = length * (1 - progress);
-        requestAnimationFrame(update);
-      }
-
-      requestAnimationFrame(update);
-    })();
-  </script>
 </body>
 </html>

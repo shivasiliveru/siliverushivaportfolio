@@ -466,6 +466,28 @@ const SmoothScroll = (() => {
   return { init, updateHeight: () => setTimeout(updateHeight, 100) };
 })();
 
+// ── SVG SCROLL PATH ────────────────────────────
+const SvgPathManager = (() => {
+  function init() {
+    const path = document.getElementById('scrollPath');
+    if (!path) return;
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+
+    function update() {
+      const scrollY = window.scrollY;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docH > 0 ? Math.min(1, scrollY / docH) : 0;
+      path.style.strokeDashoffset = length * (1 - progress);
+      requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+  }
+  return { init };
+})();
+
 // ── INIT ALL ───────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
@@ -483,4 +505,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initCounters();
   initTilt();
   initSmoothScroll();
+  SvgPathManager.init();
 });

@@ -364,6 +364,29 @@ body.cursor-hover #cursor { width: 24px; height: 24px; opacity: 0.6; }
   box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
+/* ── SVG SCROLL PATH ── */
+.hero-svg-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero-svg-wrap svg {
+  width: 100%;
+  height: 120%;
+  max-width: 900px;
+  opacity: 0.25;
+}
+.hero-svg-wrap svg path {
+  stroke: var(--accent);
+  stroke-width: 3;
+  fill: none;
+}
+
 /* ── PAGE TRANSITION OVERLAY ── */
 #page-overlay {
   position: fixed; inset: 0;
