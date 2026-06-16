@@ -488,6 +488,29 @@ const SvgPathManager = (() => {
   return { init };
 })();
 
+// ── CMS EASTER EGG ────────────────────────────
+const CmsEasterEgg = (() => {
+  let clicks = 0;
+  let timer = null;
+
+  function init() {
+    const logo = document.querySelector('.nav-logo');
+    if (!logo) return;
+
+    logo.addEventListener('click', () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => { clicks = 0; }, 800);
+      if (clicks >= 3) {
+        clicks = 0;
+        window.location.href = 'shiva-login';
+      }
+    });
+  }
+
+  return { init };
+})();
+
 // ── INIT ALL ───────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
@@ -506,4 +529,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initTilt();
   initSmoothScroll();
   SvgPathManager.init();
+  CmsEasterEgg.init();
 });

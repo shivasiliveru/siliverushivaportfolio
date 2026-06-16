@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Shiva CMS</title>
+  <link rel="icon" type="image/png" href="portfolioFavicon.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .cms-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .cms-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .cms-logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 0.06em;
+    }
+    .cms-logo em { font-style: normal; color: var(--accent); }
+    .cms-logo small {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--fg3);
+      display: block;
+    }
+
+    /* Auth */
+    #authScreen, #cmsScreen { display: none; }
+    #authScreen.active, #cmsScreen.active { display: block; }
+
+    .auth-box {
+      max-width: 400px;
+      margin: 120px auto;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 48px 36px;
+      text-align: center;
+    }
+    .auth-box h2 {
+      font-family: var(--font-display);
+      font-size: 36px;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .auth-box p {
+      color: var(--fg2);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    .auth-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--fg);
+      outline: none;
+      margin-bottom: 16px;
+      transition: border-color var(--t-fast);
+    }
+    .auth-input:focus {
+      border-color: var(--accent);
+    }
+    .auth-btn {
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all var(--t-fast);
+    }
+    .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .auth-error {
+      color: var(--accent3);
+      font-size: 12px;
+      margin-top: 12px;
+      font-family: var(--font-mono);
+    }
+
+    /* Tabs */
+    .cms-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .cms-tab {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-full);
+      padding: 8px 20px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      transition: all var(--t-fast);
+    }
+    .cms-tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .cms-tab:hover { border-color: var(--accent); color: var(--fg); }
+
+    /* Forms */
+    .cms-form {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .cms-form h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .form-row { margin-bottom: 14px; }
+    .form-row label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-bottom: 6px;
+    }
+    .form-row input, .form-row textarea, .form-row select {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fg);
+      outline: none;
+      resize: vertical;
+      transition: border-color var(--t-fast);
+    }
+    .form-row input:focus, .form-row textarea:focus { border-color: var(--accent); }
+    .form-row textarea { min-height: 60px; }
+
+    .cms-submit {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--r-full);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all var(--t-fast);
+    }
+    .cms-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .cms-submit.danger { background: var(--accent3); }
+    .cms-submit.danger:hover { box-shadow: 0 8px 20px color-mix(in srgb, var(--accent3) 30%, transparent); }
+
+    /* Items list */
+    .cms-items { display: flex; flex-direction: column; gap: 12px; }
+    .cms-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .cms-item-info h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+    }
+    .cms-item-info p {
+      font-size: 12px;
+      color: var(--fg3);
+      font-family: var(--font-mono);
+    }
+    .cms-item-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .cms-item-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--r-full);
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--fg2);
+      transition: all var(--t-fast);
+    }
+    .cms-item-btn.edit:hover { border-color: var(--accent); color: var(--accent); }
+    .cms-item-btn.delete:hover { border-color: var(--accent3); color: var(--accent3); }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: var(--fg3);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    /* Preview toggle */
+    .preview-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 28px;
+      margin-top: 32px;
+    }
+    .preview-section h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .preview-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .preview-card h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+    }
+    .preview-card p {
+      font-size: 11px;
+      color: var(--fg3);
+      font-family: var(--font-mono);
+      margin-top: 4px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #4ade80;
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s var(--ease);
+      z-index: 9999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.error { background: var(--accent3); color: var(--bg); }
+
+    .logout-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      transition: color var(--t-fast);
+    }
+    .logout-btn:hover { color: var(--accent3); }
+
+    @media(max-width:900px){
+      .form-grid { grid-template-columns: 1fr; }
+      .cms-item { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cms-container">
+    <!-- Header -->
+    <div class="cms-header">
+      <div class="cms-logo">
+        SHI<em>V</em>A <small>Content Manager</small>
+      </div>
+      <button class="logout-btn" id="logoutBtn" style="display:none"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+
+    <!-- Auth Screen -->
+    <div id="authScreen" class="active">
+      <div class="auth-box">
+        <h2>Access CMS</h2>
+        <p>Enter the secret password to manage your content</p>
+        <input type="password" id="cmsPassword" class="auth-input" placeholder="Enter password..." autocomplete="off"/>
+        <button class="auth-btn" id="loginBtn">Unlock <i class="fa-solid fa-lock-open"></i></button>
+        <div id="authError" class="auth-error"></div>
+      </div>
+    </div>
+
+    <!-- CMS Screen -->
+    <div id="cmsScreen">
+      <!-- Tabs -->
+      <div class="cms-tabs">
+        <button class="cms-tab active" data-tab="skills">Skills</button>
+        <button class="cms-tab" data-tab="projects">Projects</button>
+        <button class="cms-tab" data-tab="export">Export</button>
+      </div>
+
+      <!-- === SKILLS TAB === -->
+      <div class="cms-panel" data-panel="skills">
+        <div class="cms-form" id="skillForm">
+          <h3 id="skillFormTitle">Add Skill</h3>
+          <input type="hidden" id="editSkillId" value=""/>
+          <div class="form-grid">
+            <div class="form-row full">
+              <label>Category Name</label>
+              <input type="text" id="skillCategory" placeholder="e.g. Frontend" required/>
+            </div>
+            <div class="form-row full">
+              <label>Description</label>
+              <textarea id="skillDesc" placeholder="e.g. Building responsive interfaces..."></textarea>
+            </div>
+            <div class="form-row">
+              <label>Color</label>
+              <select id="skillColor">
+                <option value="#667eea">Purple</option>
+                <option value="#f093fb">Pink</option>
+                <option value="#4facfe">Blue</option>
+                <option value="#43e97b">Green</option>
+                <option value="#fa709a">Rose</option>
+                <option value="#f6d365">Gold</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>Icon (Font Awesome class)</label>
+              <input type="text" id="skillIcon" placeholder="fa-solid fa-palette" value="fa-solid fa-code"/>
+            </div>
+            <div class="form-row full">
+              <label>Skills (comma separated)</label>
+              <textarea id="skillList" placeholder="HTML5, CSS3, JavaScript, React"></textarea>
+            </div>
+          </div>
+          <button class="cms-submit" id="saveSkillBtn">Save Skill <i class="fa-solid fa-check"></i></button>
+          <button class="cms-submit danger" id="cancelSkillEdit" style="display:none;margin-left:8px">Cancel</button>
+        </div>
+
+        <div class="cms-items" id="skillListContainer">
+          <div class="empty-state">No skills yet. Add your first skill above.</div>
+        </div>
+      </div>
+
+      <!-- === PROJECTS TAB === -->
+      <div class="cms-panel" data-panel="projects" style="display:none">
+        <div class="cms-form" id="projectForm">
+          <h3 id="projectFormTitle">Add Project</h3>
+          <input type="hidden" id="editProjectId" value=""/>
+          <div class="form-grid">
+            <div class="form-row full">
+              <label>Project Name</label>
+              <input type="text" id="projectName" placeholder="e.g. Kareer Guide" required/>
+            </div>
+            <div class="form-row full">
+              <label>Description</label>
+              <textarea id="projectDesc" placeholder="Brief description of the project..."></textarea>
+            </div>
+            <div class="form-row">
+              <label>URL</label>
+              <input type="text" id="projectUrl" placeholder="https://..." />
+            </div>
+            <div class="form-row">
+              <label>Emoji / Icon</label>
+              <input type="text" id="projectEmoji" placeholder="🚀" value="🚀"/>
+            </div>
+            <div class="form-row full">
+              <label>Tech Stack (comma separated)</label>
+              <textarea id="projectTech" placeholder="Python, AI/ML, JavaScript"></textarea>
+            </div>
+            <div class="form-row full">
+              <label>Features (one per line)</label>
+              <textarea id="projectFeatures" placeholder="AI-powered recommendations&#10;Career roadmap generation"></textarea>
+            </div>
+          </div>
+          <button class="cms-submit" id="saveProjectBtn">Save Project <i class="fa-solid fa-check"></i></button>
+          <button class="cms-submit danger" id="cancelProjectEdit" style="display:none;margin-left:8px">Cancel</button>
+        </div>
+
+        <div class="cms-items" id="projectListContainer">
+          <div class="empty-state">No projects yet. Add your first project above.</div>
+        </div>
+      </div>
+
+      <!-- === EXPORT TAB === -->
+      <div class="cms-panel" data-panel="export" style="display:none">
+        <div class="cms-form">
+          <h3>Export Data</h3>
+          <p style="font-size:14px;color:var(--fg2);margin-bottom:16px">Copy the JSON below and use it to populate your portfolio from localStorage.</p>
+          <textarea id="exportData" style="width:100%;min-height:200px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:var(--font-mono);font-size:12px;color:var(--fg);outline:none;resize:vertical" readonly></textarea>
+          <button class="cms-submit" style="margin-top:12px" onclick="copyExport()">Copy to Clipboard <i class="fa-solid fa-copy"></i></button>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-section">
+        <h3>Live Preview</h3>
+        <div class="preview-grid" id="previewGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ── CONFIG ──
+    const SECRET_PASSWORD = 'shiva123'; // Change this!
+    const STORAGE_KEY = 'shiva-portfolio-cms';
+
+    // ── STATE ──
+    let state = { skills: [], projects: [] };
+
+    // ── DOM REFS ──
+    const authScreen = document.getElementById('authScreen');
+    const cmsScreen = document.getElementById('cmsScreen');
+    const cmsPassword = document.getElementById('cmsPassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const authError = document.getElementById('authError');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const toast = document.getElementById('toast');
+
+    // ── INIT ──
+    loadState();
+    if (sessionStorage.getItem('shiva-cms-authed') === 'true') {
+      showCMS();
+    }
+
+    // ── AUTH ──
+    loginBtn.addEventListener('click', () => {
+      if (cmsPassword.value === SECRET_PASSWORD) {
+        sessionStorage.setItem('shiva-cms-authed', 'true');
+        showCMS();
+      } else {
+        authError.textContent = 'Incorrect password. Try again.';
+        cmsPassword.value = '';
+      }
+    });
+    cmsPassword.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('shiva-cms-authed');
+      location.reload();
+    });
+
+    function showCMS() {
+      authScreen.classList.remove('active');
+      cmsScreen.classList.add('active');
+      logoutBtn.style.display = 'block';
+      renderAll();
+    }
+
+    // ── STORAGE ──
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) state = JSON.parse(saved);
+      } catch(e) {}
+      if (!state.skills) state.skills = [];
+      if (!state.projects) state.projects = [];
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+      showToast('Saved!');
+    }
+
+    // ── TOAST ──
+    function showToast(msg, isError = false) {
+      toast.textContent = msg;
+      toast.className = 'toast' + (isError ? ' error' : '');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // ── TABS ──
+    document.querySelectorAll('.cms-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cms-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.cms-panel').forEach(p => p.style.display = 'none');
+        const panel = document.querySelector(`.cms-panel[data-panel="${tab.dataset.tab}"]`);
+        if (panel) panel.style.display = 'block';
+        if (tab.dataset.tab === 'export') updateExport();
+        updatePreview();
+      });
+    });
+
+    // ── SKILLS ──
+    document.getElementById('saveSkillBtn').addEventListener('click', saveSkill);
+    document.getElementById('cancelSkillEdit').addEventListener('click', cancelSkillEdit);
+
+    function saveSkill() {
+      const category = document.getElementById('skillCategory').value.trim();
+      const desc = document.getElementById('skillDesc').value.trim();
+      const color = document.getElementById('skillColor').value;
+      const icon = document.getElementById('skillIcon').value.trim();
+      const rawList = document.getElementById('skillList').value.trim();
+      const editId = document.getElementById('editSkillId').value;
+
+      if (!category) { showToast('Category name is required', true); return; }
+      const skills = rawList ? rawList.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const skillData = { category, desc, color, icon: icon || 'fa-solid fa-code', skills };
+
+      if (editId) {
+        const idx = state.skills.findIndex(s => s.id === editId);
+        if (idx !== -1) { state.skills[idx] = { ...state.skills[idx], ...skillData }; }
+        cancelSkillEdit();
+      } else {
+        state.skills.push({ id: Date.now().toString(), ...skillData });
+      }
+      saveState();
+    }
+
+    function editSkill(id) {
+      const skill = state.skills.find(s => s.id === id);
+      if (!skill) return;
+      document.getElementById('skillFormTitle').textContent = 'Edit Skill';
+      document.getElementById('editSkillId').value = id;
+      document.getElementById('skillCategory').value = skill.category || '';
+      document.getElementById('skillDesc').value = skill.desc || '';
+      document.getElementById('skillColor').value = skill.color || '#667eea';
+      document.getElementById('skillIcon').value = skill.icon || 'fa-solid fa-code';
+      document.getElementById('skillList').value = (skill.skills || []).join(', ');
+      document.getElementById('cancelSkillEdit').style.display = 'inline-block';
+    }
+
+    function cancelSkillEdit() {
+      document.getElementById('skillFormTitle').textContent = 'Add Skill';
+      document.getElementById('editSkillId').value = '';
+      document.getElementById('skillCategory').value = '';
+      document.getElementById('skillDesc').value = '';
+      document.getElementById('skillList').value = '';
+      document.getElementById('cancelSkillEdit').style.display = 'none';
+    }
+
+    function deleteSkill(id) {
+      state.skills = state.skills.filter(s => s.id !== id);
+      saveState();
+    }
+
+    // ── PROJECTS ──
+    document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
+    document.getElementById('cancelProjectEdit').addEventListener('click', cancelProjectEdit);
+
+    function saveProject() {
+      const name = document.getElementById('projectName').value.trim();
+      const desc = document.getElementById('projectDesc').value.trim();
+      const url = document.getElementById('projectUrl').value.trim();
+      const emoji = document.getElementById('projectEmoji').value.trim();
+      const rawTech = document.getElementById('projectTech').value.trim();
+      const rawFeatures = document.getElementById('projectFeatures').value.trim();
+      const editId = document.getElementById('editProjectId').value;
+
+      if (!name) { showToast('Project name is required', true); return; }
+      const tech = rawTech ? rawTech.split(',').map(s => s.trim()).filter(Boolean) : [];
+      const features = rawFeatures ? rawFeatures.split('\n').map(s => s.trim()).filter(Boolean) : [];
+
+      const projectData = { name, desc, url, emoji: emoji || '🚀', tech, features };
+
+      if (editId) {
+        const idx = state.projects.findIndex(p => p.id === editId);
+        if (idx !== -1) { state.projects[idx] = { ...state.projects[idx], ...projectData }; }
+        cancelProjectEdit();
+      } else {
+        state.projects.push({ id: Date.now().toString(), ...projectData });
+      }
+      saveState();
+    }
+
+    function editProject(id) {
+      const project = state.projects.find(p => p.id === id);
+      if (!project) return;
+      document.getElementById('projectFormTitle').textContent = 'Edit Project';
+      document.getElementById('editProjectId').value = id;
+      document.getElementById('projectName').value = project.name || '';
+      document.getElementById('projectDesc').value = project.desc || '';
+      document.getElementById('projectUrl').value = project.url || '';
+      document.getElementById('projectEmoji').value = project.emoji || '🚀';
+      document.getElementById('projectTech').value = (project.tech || []).join(', ');
+      document.getElementById('projectFeatures').value = (project.features || []).join('\n');
+      document.getElementById('cancelProjectEdit').style.display = 'inline-block';
+    }
+
+    function cancelProjectEdit() {
+      document.getElementById('projectFormTitle').textContent = 'Add Project';
+      document.getElementById('editProjectId').value = '';
+      document.getElementById('projectName').value = '';
+      document.getElementById('projectDesc').value = '';
+      document.getElementById('projectUrl').value = '';
+      document.getElementById('projectEmoji').value = '🚀';
+      document.getElementById('projectTech').value = '';
+      document.getElementById('projectFeatures').value = '';
+      document.getElementById('cancelProjectEdit').style.display = 'none';
+    }
+
+    function deleteProject(id) {
+      state.projects = state.projects.filter(p => p.id !== id);
+      saveState();
+    }
+
+    // ── RENDER ──
+    function renderAll() {
+      renderSkills();
+      renderProjects();
+      updatePreview();
+    }
+
+    function renderSkills() {
+      const container = document.getElementById('skillListContainer');
+      if (state.skills.length === 0) {
+        container.innerHTML = '<div class="empty-state">No skills yet. Add your first skill above.</div>';
+        return;
+      }
+      container.innerHTML = state.skills.map(s => `
+        <div class="cms-item">
+          <div class="cms-item-info">
+            <h4>${s.category}</h4>
+            <p>${(s.skills || []).length} skills · ${s.desc ? s.desc.substring(0, 60) : ''}</p>
+          </div>
+          <div class="cms-item-actions">
+            <button class="cms-item-btn edit" onclick="editSkill('${s.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="cms-item-btn delete" onclick="deleteSkill('${s.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderProjects() {
+      const container = document.getElementById('projectListContainer');
+      if (state.projects.length === 0) {
+        container.innerHTML = '<div class="empty-state">No projects yet. Add your first project above.</div>';
+        return;
+      }
+      container.innerHTML = state.projects.map(p => `
+        <div class="cms-item">
+          <div class="cms-item-info">
+            <h4>${p.emoji || '🚀'} ${p.name}</h4>
+            <p>${(p.tech || []).length} technologies · ${p.desc ? p.desc.substring(0, 60) : ''}</p>
+          </div>
+          <div class="cms-item-actions">
+            <button class="cms-item-btn edit" onclick="editProject('${p.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="cms-item-btn delete" onclick="deleteProject('${p.id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updatePreview() {
+      const grid = document.getElementById('previewGrid');
+      const items = [...state.skills.map(s => ({ type: 'skill', label: s.category, sub: (s.skills || []).length + ' skills' })), ...state.projects.map(p => ({ type: 'project', label: p.name, sub: (p.tech || []).length + ' technologies' }))];
+      if (items.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">No content to preview</div>';
+        return;
+      }
+      grid.innerHTML = items.slice(0, 8).map(item => `
+        <div class="preview-card">
+          <h4>${item.type === 'project' ? '🚀 ' : '⚡ '}${item.label}</h4>
+          <p>${item.sub}</p>
+        </div>
+      `).join('');
+    }
+
+    function updateExport() {
+      document.getElementById('exportData').value = JSON.stringify(state, null, 2);
+    }
+
+    function copyExport() {
+      const el = document.getElementById('exportData');
+      el.select();
+      document.execCommand('copy');
+      showToast('Copied to clipboard!');
+    }
+  </script>
+</body>
+</html>
