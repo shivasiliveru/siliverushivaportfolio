@@ -320,7 +320,8 @@
       <div class="auth-box">
         <h2>Access CMS</h2>
         <p>Enter the secret password to manage your content</p>
-        <input type="password" id="cmsPassword" class="auth-input" placeholder="Enter password..." autocomplete="off"/>
+        <input type="text" id="cmsName" class="auth-input" placeholder="Name..." autocomplete="off"/>
+        <input type="password" id="cmsPassword" class="auth-input" placeholder="Password..." autocomplete="off"/>
         <button class="auth-btn" id="loginBtn">Unlock <i class="fa-solid fa-lock-open"></i></button>
         <div id="authError" class="auth-error"></div>
       </div>
@@ -440,7 +441,7 @@
 
   <script>
     // ── CONFIG ──
-    const SECRET_PASSWORD = 'shiva123'; // Change this!
+    const SECRET_PASSWORD = 'Shiva@2693';
     const STORAGE_KEY = 'shiva-portfolio-cms';
 
     // ── STATE ──
@@ -451,7 +452,8 @@
     const cmsScreen = document.getElementById('cmsScreen');
     const cmsPassword = document.getElementById('cmsPassword');
     const loginBtn = document.getElementById('loginBtn');
-    const authError = document.getElementById('authError');
+    const cmsName = document.getElementById('cmsName');
+const authError = document.getElementById('authError');
     const logoutBtn = document.getElementById('logoutBtn');
     const toast = document.getElementById('toast');
 
@@ -463,11 +465,12 @@
 
     // ── AUTH ──
     loginBtn.addEventListener('click', () => {
-      if (cmsPassword.value === SECRET_PASSWORD) {
+      if (cmsName.value === 'Shiva' && cmsPassword.value === SECRET_PASSWORD) {
         sessionStorage.setItem('shiva-cms-authed', 'true');
         showCMS();
       } else {
-        authError.textContent = 'Incorrect password. Try again.';
+        authError.textContent = 'Incorrect credentials. Try again.';
+        cmsName.value = '';
         cmsPassword.value = '';
       }
     });
