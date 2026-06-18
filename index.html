@@ -20,8 +20,8 @@
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 48px 80px;
+      justify-content: center;
+      padding: 0 48px;
       position: relative;
       overflow: hidden;
     }
@@ -62,7 +62,7 @@
       position: relative; z-index: 2;
       display: grid;
       grid-template-columns: 1fr auto;
-      align-items: flex-end;
+      align-items: center;
       gap: 48px;
     }
 
@@ -136,7 +136,9 @@
     }
 
     .hero-right {
-      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
       animation: fade-up 1s var(--ease) 0.9s both;
     }
@@ -172,16 +174,8 @@
     /* Hero portrait image */
     .hero-portrait {
       width: 320px;
-      height: 320px;
-      border-radius: var(--r-lg);
-      object-fit: cover;
-      border: 2px solid var(--border2);
-      box-shadow: 0 20px 60px color-mix(in srgb, var(--accent) 25%, transparent);
-      transition: transform var(--t-med), box-shadow var(--t-med);
-    }
-    .hero-portrait:hover {
-      transform: scale(1.02);
-      box-shadow: 0 30px 80px color-mix(in srgb, var(--accent) 35%, transparent);
+      height: auto;
+      display: block;
     }
     @media(max-width:900px){
       .hero-portrait { width: 200px; height: 200px; }
