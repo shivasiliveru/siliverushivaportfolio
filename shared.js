@@ -126,7 +126,16 @@ const IntroManager = (() => {
       setTimeout(() => {
         intro.style.display = 'none';
         document.body.style.overflow = '';
-        if (typeof Revealer !== 'undefined') Revealer.refresh();
+        // Only refresh the legacy vanilla Revealer on pages that are
+        // actually using it. On pages running the GSAP motion engine,
+        // Revealer.init() never ran (see shared.js's init block), so
+        // Revealer.refresh() would force .revealed onto elements GSAP is
+        // independently animating — fighting motion.js's own ScrollTrigger
+        // reveals instead of cooperating with them. ScrollTrigger.refresh()
+        // is motion.js's own equivalent, called from there instead.
+        if (!window.__useGsapMotion && typeof Revealer !== 'undefined') {
+          Revealer.refresh();
+        }
       }, 1200); // match CSS transition
     };
 
@@ -512,22 +521,34 @@ const CmsEasterEgg = (() => {
 })();
 
 // ── INIT ALL ──
+// Pages can opt into the GSAP/Lenis motion engine (motion.js) by setting
+// `window.__useGsapMotion = true` before this script runs (see index.html).
+// When that flag is absent, every page keeps the exact behavior it has today —
+// nothing below this comment changed for about/skills/projects/experience/contact.
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
   CursorManager.init();
   CmsEasterEgg.init();
   IntroManager.init();
   Loader.init();
-  Revealer.init();
-  ParallaxManager.init();
   ProgressBar.init();
   NavManager.init();
   PageTransition.init();
-  SmoothScroll.init();
   initMagnetic();
   initMobileMenu();
   initCounters();
   initTilt();
-  SmoothScroll.init();
-  SvgPathManager.init();
+
+  if (window.__useGsapMotion) {
+    // motion.js (GSAP + Lenis) owns scroll, reveal, parallax, and the SVG path
+    // on pages that load it. Initialized from motion.js itself once GSAP/Lenis
+    // are confirmed loaded — see that file's own DOMContentLoaded-safe init.
+  } else {
+    // Legacy vanilla engine — unchanged behavior for every page that hasn't
+    // opted in yet.
+    Revealer.init();
+    ParallaxManager.init();
+    SmoothScroll.init();
+    SvgPathManager.init();
+  }
 });

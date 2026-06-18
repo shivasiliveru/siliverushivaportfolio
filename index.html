@@ -14,7 +14,15 @@
 
   <link rel="icon" type="image/png" href="portfolioFavicon.png"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.18/lenis.min.css"/>
   <link rel="stylesheet" href="shared.css"/>
+  <script>
+    // Opt this page into the GSAP/Lenis motion engine (motion.js).
+    // Must be set before shared.js runs its DOMContentLoaded init, so the
+    // vanilla Revealer/ParallaxManager/SmoothScroll/SvgPathManager stack
+    // steps aside on this page only — every other page is unaffected.
+    window.__useGsapMotion = true;
+  </script>
   <style>
     /* ── HERO ── */
     .hero {
@@ -176,6 +184,7 @@
       width: 320px;
       height: auto;
       display: block;
+      will-change: transform;
     }
     @media(max-width:900px){
       .hero-portrait { width: 200px; height: 200px; }
@@ -206,10 +215,28 @@
       50%{transform:scaleY(0.5);transform-origin:bottom}
     }
 
+    /* ── STATEMENT STRIP ── */
+    .statement-strip {
+      padding: 110px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .statement-text {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 5vw, 60px);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      max-width: 880px;
+      color: var(--fg);
+    }
+    .statement-text em { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+    .statement-sub {
+      font-size: 15px; color: var(--fg2); max-width: 480px; margin-top: 28px; line-height: 1.75;
+    }
+
     /* ── INTRO STRIP ── */
     .intro-strip {
       background: var(--bg2);
-      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       padding: 60px 0;
     }
@@ -238,65 +265,90 @@
     }
 
     /* ── LATEST WORK PREVIEW ── */
-    .work-preview { padding: 100px 0; }
+    .work-preview { padding: 110px 0; position: relative; }
     .work-preview-header {
       display: flex; align-items: flex-end;
       justify-content: space-between;
-      margin-bottom: 56px;
+      margin-bottom: 36px;
     }
+    .work-count { font-family: var(--font-mono); font-size: 11px; color: var(--fg3); margin-left: 8px; }
 
-    .work-grid {
+    .work-index { display: flex; flex-direction: column; border-top: 1px solid var(--border); }
+    .work-row {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 44px 1fr 28px;
       grid-template-rows: auto auto;
-      gap: 20px;
+      align-items: center;
+      column-gap: 24px;
+      row-gap: 6px;
+      padding: 30px 4px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      position: relative;
+      cursor: none;
+      transition: padding-left var(--t-med);
     }
+    .work-row:hover { padding-left: 18px; }
+    .work-row::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--row-color, var(--accent));
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform var(--t-med);
+    }
+    .work-row:hover::before { transform: scaleY(1); }
+    .work-row-num {
+      grid-column: 1; grid-row: 1 / 3; align-self: center;
+      font-family: var(--font-mono); font-size: 12px; color: var(--fg3);
+    }
+    .work-row-name {
+      grid-column: 2; grid-row: 1;
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 38px);
+      letter-spacing: 0.02em;
+      transition: color var(--t-fast);
+    }
+    .work-row:hover .work-row-name { color: var(--row-color, var(--accent)); }
+    .work-row-meta {
+      grid-column: 2; grid-row: 2;
+      font-size: 13px; color: var(--fg2); line-height: 1.55; max-width: 620px;
+    }
+    .work-row-meta b {
+      font-family: var(--font-mono); font-weight: 500; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg3); margin-right: 8px;
+    }
+    .work-row-arrow {
+      grid-column: 3; grid-row: 1 / 3; align-self: center; justify-self: end;
+      font-size: 18px; color: var(--fg3); transition: all var(--t-med);
+    }
+    .work-row:hover .work-row-arrow { color: var(--row-color, var(--accent)); transform: translate(3px,-3px); }
 
-    .work-item {
+    /* Floating cursor preview — fine pointer only, decorative */
+    .work-preview-float {
+      position: fixed; top: 0; left: 0;
+      width: 220px; height: 160px;
+      border-radius: var(--r-lg);
       background: var(--bg2);
       border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 36px;
-      position: relative;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-9999px,-9999px);
+      transition: opacity 0.25s ease;
+      z-index: 60;
       overflow: hidden;
-      transition: border-color var(--t-med), transform var(--t-med);
-      cursor: none;
     }
-    .work-item:hover { border-color: var(--border2); transform: translateY(-4px); }
-    .work-item.span-2 { grid-row: span 2; }
-
-    .work-item-num {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--fg3);
-      margin-bottom: 28px;
+    .work-preview-float.is-visible { opacity: 1; }
+    .work-preview-float-icon { font-size: 42px; color: var(--row-color, var(--accent)); }
+    .work-preview-float-text {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--fg3); text-align: center; padding: 0 18px; line-height: 1.5;
     }
-    .work-item-name {
-      font-family: var(--font-display);
-      font-size: clamp(28px, 3.5vw, 44px);
-      letter-spacing: 0.03em;
-      line-height: 0.95;
-      color: var(--fg);
-      margin-bottom: 14px;
+    @media (hover: none), (pointer: coarse) {
+      .work-preview-float { display: none; }
     }
-    .work-item-desc {
-      font-size: 14px;
-      color: var(--fg2);
-      line-height: 1.7;
-      margin-bottom: 24px;
+    @media (prefers-reduced-motion: reduce) {
+      .work-preview-float { display: none; }
     }
-    .work-item-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-
-    /* Hover shimmer */
-    .work-item::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 50% at 50% 0%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 60%);
-      opacity: 0; transition: opacity var(--t-med);
-    }
-    .work-item:hover::before { opacity: 1; }
 
     /* ── SERVICES SNAPSHOT ── */
     .services-snap { padding: 100px 0; background: var(--bg2); }
@@ -350,14 +402,14 @@
       .hero-right { display: none; }
       .intro-inner { grid-template-columns: 1fr; gap: 20px; }
       .intro-divider { display: none; }
-      .work-grid { grid-template-columns: 1fr; }
-      .work-item.span-2 { grid-row: span 1; }
       .services-row { grid-template-columns: repeat(2,1fr); }
+      .work-row { grid-template-columns: 32px 1fr 24px; padding: 24px 4px; }
     }
     @media(max-width:480px) {
       .hero-name { font-size: 64px; }
       .hero-sub { font-size: 18px; }
       .hero-tagline { font-size: 14px; }
+      .statement-strip { padding: 80px 0; }
     }
   </style>
 </head>
@@ -501,12 +553,23 @@
     </div>
   </div>
 
+  <!-- STATEMENT -->
+  <section class="statement-strip">
+    <div class="container">
+      <p class="statement-text" data-reveal="blur">Basically, I build things that <em>work</em>.</p>
+      <p class="statement-sub" data-reveal="up" data-reveal-delay="2">
+        Full-stack engineering meets applied AI — less about how a project looks in a screenshot,
+        more about whether it actually solves the problem it was built for.
+      </p>
+    </div>
+  </section>
+
   <!-- INTRO STATS STRIP -->
   <div class="intro-strip">
     <div class="container">
       <div class="intro-inner">
         <div class="intro-item" data-reveal="up">
-          <div class="intro-item-num"><span data-count="5" data-suffix="+">5+</span></div>
+          <div class="intro-item-num"><span data-count="6" data-suffix="+">6+</span></div>
           <div class="intro-item-label">Real-World Projects Deployed</div>
         </div>
         <div class="intro-divider"></div>
@@ -524,66 +587,61 @@
   </div>
 
   <!-- WORK PREVIEW -->
-  <section class="work-preview">
+  <section class="work-preview" id="work">
     <div class="container">
       <div class="work-preview-header">
         <div data-reveal="up">
-          <div class="eyebrow">Selected Work</div>
+          <div class="eyebrow">Selected Work <span class="work-count">(04)</span></div>
           <h2 class="heading">Projects that matter</h2>
         </div>
         <a href="projects" class="btn btn-ghost" data-transition data-reveal="right">View All Projects <i class="fa-solid fa-arrow-right"></i></a>
       </div>
 
+      <div class="work-index" id="workIndex">
 
-      <div class="work-grid">
-        <!-- Featured: Kareer Guide -->
-        <a href="https://kareer-guide.vercel.app/" target="_blank" class="work-item span-2" data-reveal="scale" data-tilt style="text-decoration:none; color:inherit; display:block">
-          <div class="work-item-num">01 — Featured</div>
-          <div class="work-item-name">Kareer Guide</div>
-          <div class="work-item-desc">AI-powered career platform that analyzes your skills and generates personalized job recommendations with step-by-step career roadmaps.</div>
-          <div class="work-item-tags">
-            <span class="chip">Python</span>
-            <span class="chip">AI/ML</span>
-            <span class="chip">JavaScript</span>
-            <span class="chip">MySQL</span>
-          </div>
+        <a href="https://kareer-guide.vercel.app/" target="_blank" class="work-row" data-reveal="up"
+           style="--row-color: var(--accent)" data-icon="fa-bullseye"
+           data-tagline="A skill set in, a ranked job match with a roadmap out.">
+          <span class="work-row-num">01</span>
+          <span class="work-row-name">Kareer Guide</span>
+          <span class="work-row-meta"><b>AI · Career Tech</b>Analyzes your skills and generates personalized job recommendations with a full career roadmap.</span>
+          <span class="work-row-arrow"><i class="fa-solid fa-arrow-up-right"></i></span>
         </a>
- 
-        <!-- Emotion Detector -->
-        <div class="work-item" data-reveal="left" data-reveal-delay="2" data-tilt>
-          <div class="work-item-num">02</div>
-          <div class="work-item-name">Emotion Detector</div>
-          <div class="work-item-desc">Real-time facial emotion recognition using webcam, DeepFace and OpenCV.</div>
-          <div class="work-item-tags">
-            <span class="chip">Python</span>
-            <span class="chip">OpenCV</span>
-            <span class="chip">DeepFace</span>
-          </div>
+
+        <div class="work-row" data-reveal="up" data-reveal-delay="1"
+             style="--row-color: var(--accent3)" data-icon="fa-face-surprise"
+             data-tagline="Seven emotions, read off a live webcam feed, in real time.">
+          <span class="work-row-num">02</span>
+          <span class="work-row-name">Emotion Detector</span>
+          <span class="work-row-meta"><b>AI · Computer Vision</b>Real-time facial emotion recognition using a webcam feed, DeepFace, and OpenCV.</span>
+          <span class="work-row-arrow"><i class="fa-solid fa-arrow-up-right"></i></span>
         </div>
- 
-        <!-- Kisan Sathi -->
-        <a href="https://kisansathi.vercel.app/" target="_blank" class="work-item" data-reveal="right" data-reveal-delay="4" data-tilt style="text-decoration:none; color:inherit; display:block">
-          <div class="work-item-num">03</div>
-          <div class="work-item-name">Kisan Sathi</div>
-          <div class="work-item-desc">Smart farming assistant with AI crop recommendations for rural India.</div>
-          <div class="work-item-tags">
-            <span class="chip">Python</span>
-            <span class="chip">AI</span>
-          </div>
+
+        <a href="https://kisansathi.vercel.app/" target="_blank" class="work-row" data-reveal="up" data-reveal-delay="2"
+           style="--row-color:#4ade80" data-icon="fa-wheat-awn"
+           data-tagline="Crop guidance built for rural India first, not retrofitted for it.">
+          <span class="work-row-num">03</span>
+          <span class="work-row-name">Kisan Sathi</span>
+          <span class="work-row-meta"><b>AI · Social Impact</b>Smart farming assistant with AI crop recommendations for rural India.</span>
+          <span class="work-row-arrow"><i class="fa-solid fa-arrow-up-right"></i></span>
         </a>
 
-        <!-- IVR System -->
-        <a href="tel:04041893915" class="work-item" data-reveal="up" data-reveal-delay="5" data-tilt style="text-decoration:none; color:inherit; display:block">
-          <div class="work-item-num">04</div>
-          <div class="work-item-name">IVR System</div>
-          <div class="work-item-desc">Voice-based agricultural assistant. Call and get AI crop advice instantly via phone.</div>
-          <div class="work-item-tags">
-            <span class="chip">IVR System</span>
-            <span class="chip">Twilio</span>
-            <span class="chip">Voice AI</span>
-          </div>
+        <a href="tel:04041893915" class="work-row" data-reveal="up" data-reveal-delay="3"
+           style="--row-color:#fbbf24" data-icon="fa-phone-volume"
+           data-tagline="Crop advice over an ordinary phone call — no app, no smartphone needed.">
+          <span class="work-row-num">04</span>
+          <span class="work-row-name">IVR System</span>
+          <span class="work-row-meta"><b>Voice AI</b>Voice-based agricultural assistant — call and get AI crop advice instantly by phone.</span>
+          <span class="work-row-arrow"><i class="fa-solid fa-phone"></i></span>
         </a>
+
       </div>
+    </div>
+
+    <!-- Floating cursor preview (fine pointer only, decorative) -->
+    <div class="work-preview-float" id="workFloat" aria-hidden="true">
+      <div class="work-preview-float-icon"><i class="fa-solid fa-circle"></i></div>
+      <div class="work-preview-float-text"></div>
     </div>
   </section>
 
@@ -657,6 +715,58 @@
 
   </div></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.18/lenis.min.js"></script>
   <script src="shared.js"></script>
+  <script src="motion.js"></script>
+  <script>
+  (function(){
+    if (window.__workIndexInit) return;
+    window.__workIndexInit = true;
+
+    var fineHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var canFloat = fineHover && !reduceMotion;
+
+    var rows = document.querySelectorAll('.work-row');
+    var floatEl = document.getElementById('workFloat');
+    if (!canFloat || !floatEl || !rows.length) return;
+
+    var iconEl = floatEl.querySelector('.work-preview-float-icon i');
+    var textEl = floatEl.querySelector('.work-preview-float-text');
+
+    var mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+    var halfW = floatEl.offsetWidth / 2, halfH = floatEl.offsetHeight / 2;
+
+    document.addEventListener('mousemove', function(e){
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function loop(){
+      curX += (mouseX - curX) * 0.18;
+      curY += (mouseY - curY) * 0.18;
+      floatEl.style.transform = 'translate(' + (curX - halfW) + 'px,' + (curY - halfH - 40) + 'px)';
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    rows.forEach(function(row){
+      row.addEventListener('mouseenter', function(){
+        var icon = row.dataset.icon || 'fa-circle';
+        var tagline = row.dataset.tagline || '';
+        var color = getComputedStyle(row).getPropertyValue('--row-color').trim();
+        iconEl.className = 'fa-solid ' + icon;
+        textEl.textContent = tagline;
+        floatEl.style.setProperty('--row-color', color);
+        floatEl.classList.add('is-visible');
+      });
+      row.addEventListener('mouseleave', function(){
+        floatEl.classList.remove('is-visible');
+      });
+    });
+  })();
+  </script>
 </body>
 </html>
