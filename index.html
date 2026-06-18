@@ -169,6 +169,24 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* Hero portrait image */
+    .hero-portrait {
+      width: 320px;
+      height: 320px;
+      border-radius: var(--r-lg);
+      object-fit: cover;
+      border: 2px solid var(--border2);
+      box-shadow: 0 20px 60px color-mix(in srgb, var(--accent) 25%, transparent);
+      transition: transform var(--t-med), box-shadow var(--t-med);
+    }
+    .hero-portrait:hover {
+      transform: scale(1.02);
+      box-shadow: 0 30px 80px color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+    @media(max-width:900px){
+      .hero-portrait { width: 200px; height: 200px; }
+    }
+
     /* Scroll indicator */
     .hero-scroll {
       position: absolute;
@@ -449,20 +467,7 @@
       </div>
 
       <div class="hero-right">
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <div class="hero-stat-num">5<span style="color:var(--accent)">+</span></div>
-            <div class="hero-stat-label">Projects Built</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num">3<span style="color:var(--accent)">+</span></div>
-            <div class="hero-stat-label">Tech Domains</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num">2<span style="color:var(--accent)">+</span></div>
-            <div class="hero-stat-label">Certifications</div>
-          </div>
-        </div>
+        <img src="shivaportfolioimage.png" alt="Shiva" class="hero-portrait"/>
       </div>
     </div>
 
