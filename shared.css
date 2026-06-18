@@ -312,7 +312,7 @@ body.cursor-hover #cursor { width: 24px; height: 24px; opacity: 0.6; }
   white-space: nowrap;
 }
 .nav-link:hover { color: var(--fg); }
-.nav-link.active { color: var(--bg); }
+.nav-link.active { color: var(--fg); }
 
 .nav-cursor {
   position: absolute;

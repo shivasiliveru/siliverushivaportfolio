@@ -488,10 +488,34 @@ const SvgPathManager = (() => {
   return { init };
 })();
 
-// ── INIT ALL ───────────────────────────────────
+// ── CMS EASTER EGG (triple-click logo) ──────────
+const CmsEasterEgg = (() => {
+  let clicks = 0;
+  let timer = null;
+
+  function init() {
+    const logo = document.querySelector('.nav-logo');
+    if (!logo) return;
+    logo.addEventListener('click', () => {
+      clicks++;
+      if (clicks === 3) {
+        clicks = 0;
+        window.location.href = 'shiva-login';
+        return;
+      }
+      clearTimeout(timer);
+      timer = setTimeout(() => { clicks = 0; }, 600);
+    });
+  }
+
+  return { init };
+})();
+
+// ── INIT ALL ──
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
   CursorManager.init();
+  CmsEasterEgg.init();
   IntroManager.init();
   Loader.init();
   Revealer.init();
@@ -504,6 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initCounters();
   initTilt();
-  initSmoothScroll();
+  SmoothScroll.init();
   SvgPathManager.init();
 });
