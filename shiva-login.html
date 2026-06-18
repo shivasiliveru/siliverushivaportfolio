@@ -333,6 +333,7 @@
       <div class="cms-tabs">
         <button class="cms-tab active" data-tab="skills">Skills</button>
         <button class="cms-tab" data-tab="projects">Projects</button>
+        <button class="cms-tab" data-tab="image">Image</button>
         <button class="cms-tab" data-tab="export">Export</button>
       </div>
 
@@ -419,6 +420,23 @@
         </div>
       </div>
 
+      <!-- === IMAGE TAB === -->
+      <div class="cms-panel" data-panel="image" style="display:none">
+        <div class="cms-form">
+          <h3>Profile Image</h3>
+          <p style="font-size:14px;color:var(--fg2);margin-bottom:16px">Upload your profile photo. It will update on both the home hero section and the about page.</p>
+          <div class="form-row" style="text-align:center">
+            <div id="imagePreview" style="width:160px;height:160px;margin:0 auto 20px;border-radius:16px;overflow:hidden;background:var(--bg3);display:flex;align-items:center;justify-content:center;border:1px solid var(--border)">
+              <img id="cmsImagePreview" src="" alt="Preview" style="width:100%;height:100%;object-fit:cover;display:none"/>
+              <span id="cmsImagePlaceholder" style="font-size:40px;color:var(--fg3)"><i class="fa-solid fa-user"></i></span>
+            </div>
+            <input type="file" id="imageInput" accept="image/*" style="display:none"/>
+            <button class="cms-submit" id="uploadImageBtn">Choose Image <i class="fa-solid fa-upload"></i></button>
+            <button class="cms-submit danger" id="removeImageBtn" style="margin-left:8px">Remove <i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+
       <!-- === EXPORT TAB === -->
       <div class="cms-panel" data-panel="export" style="display:none">
         <div class="cms-form">
@@ -445,7 +463,7 @@
     const STORAGE_KEY = 'shiva-portfolio-cms';
 
     // ── STATE ──
-    let state = { skills: [], projects: [] };
+    let state = { skills: [], projects: [], profileImage: '' };
 
     // ── DOM REFS ──
     const authScreen = document.getElementById('authScreen');
@@ -498,6 +516,7 @@ const authError = document.getElementById('authError');
       } catch(e) {}
       if (!state.skills) state.skills = [];
       if (!state.projects) state.projects = [];
+      if (!state.profileImage) state.profileImage = '';
     }
 
     function saveState() {
@@ -523,6 +542,7 @@ const authError = document.getElementById('authError');
         const panel = document.querySelector(`.cms-panel[data-panel="${tab.dataset.tab}"]`);
         if (panel) panel.style.display = 'block';
         if (tab.dataset.tab === 'export') updateExport();
+        if (tab.dataset.tab === 'image') updateImagePreview();
         updatePreview();
       });
     });
@@ -639,6 +659,40 @@ const authError = document.getElementById('authError');
     function deleteProject(id) {
       state.projects = state.projects.filter(p => p.id !== id);
       saveState();
+    }
+
+    // ── IMAGE ──
+    document.getElementById('uploadImageBtn').addEventListener('click', () => {
+      document.getElementById('imageInput').click();
+    });
+    document.getElementById('imageInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        state.profileImage = ev.target.result;
+        saveState();
+        updateImagePreview();
+      };
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('removeImageBtn').addEventListener('click', () => {
+      state.profileImage = '';
+      saveState();
+      updateImagePreview();
+    });
+
+    function updateImagePreview() {
+      const img = document.getElementById('cmsImagePreview');
+      const placeholder = document.getElementById('cmsImagePlaceholder');
+      if (state.profileImage) {
+        img.src = state.profileImage;
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      } else {
+        img.style.display = 'none';
+        placeholder.style.display = 'inline';
+      }
     }
 
     // ── RENDER ──

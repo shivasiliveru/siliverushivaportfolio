@@ -78,11 +78,20 @@ const CmsRenderer = (() => {
     }).join('');
   }
 
+  function renderImage(cms) {
+    if (!cms.profileImage) return;
+    const heroImg = document.querySelector('.hero-portrait');
+    const aboutImg = document.querySelector('.profile-avatar img');
+    if (heroImg) heroImg.src = cms.profileImage;
+    if (aboutImg) aboutImg.src = cms.profileImage;
+  }
+
   function init() {
     const page = document.body.dataset.page;
     const cms = loadCMS();
     if (!cms) return;
 
+    renderImage(cms);
     if (page === 'skills') renderSkills(cms);
     if (page === 'projects') {
       renderProjects(cms);
