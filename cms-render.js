@@ -54,9 +54,11 @@ const CmsRenderer = (() => {
       const num = String(i + 1).padStart(2, '0');
       const hasUrl = !!proj.url;
       const color = colors[i % colors.length];
+      const isFaIcon = proj.emoji && proj.emoji.startsWith('fa-');
+      const sceneIcon = isFaIcon ? `<i class="fa-solid ${proj.emoji}"></i>` : `<span style="font-size:84px">${proj.emoji || '🚀'}</span>`;
       return `
         <article class="story-chapter ${i === 0 ? 'featured' : ''}" data-cat="all" style="--chap-color: ${color}">
-          <div class="chapter-scene"><i class="${proj.emoji ? 'fa-solid ' + proj.emoji : 'fa-solid fa-code'}"></i></div>
+          <div class="chapter-scene">${sceneIcon}</div>
           <div class="chapter-content">
             <div class="chapter-eyebrow">
               <span class="chapter-num">Chapter ${num}</span>
