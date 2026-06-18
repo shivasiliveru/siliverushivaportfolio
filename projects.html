@@ -40,14 +40,32 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* ── FILTER BAR ── */
-    .filter-bar {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      padding: 32px 0;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 56px;
+    /* ── SCROLL CUE ── */
+    .story-scroll-cue {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 40px;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg3);
+      animation: fade-in-up 1s var(--ease) 0.9s both; opacity: 0;
     }
-    .filter-btn {
+    .story-scroll-cue i { animation: nudge 1.6s ease-in-out infinite; color: var(--accent); }
+    @keyframes nudge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+    /* ── STORY INDEX (filter / chapter jump) ── */
+    .story-index {
+      position: sticky; top: var(--nav-height, 88px); z-index: 5;
+      display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+      padding: 18px 0;
+      margin-bottom: 72px;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(6px);
+    }
+    .story-index-label {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg3); margin-right: 4px;
+    }
+    .index-pill {
       font-family: var(--font-mono);
       font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
       padding: 9px 20px;
@@ -58,149 +76,140 @@
       transition: all var(--t-fast);
       cursor: none;
     }
-    .filter-btn:hover, .filter-btn.active {
+    .index-pill:hover, .index-pill.active {
       background: var(--accent);
       border-color: var(--accent);
       color: var(--bg);
     }
 
-    /* ── PROJECT GRID ── */
-    .projects-body { padding: 60px 0 100px; }
+    /* ── STORY BODY ── */
+    .projects-body { padding: 60px 0 120px; }
 
-    .projects-bento {
+    .story-wrap {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-auto-rows: minmax(200px, auto);
-      gap: 16px;
+      grid-template-columns: 56px 1fr;
+      gap: 0 32px;
     }
 
-    .proj-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 36px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color var(--t-med), transform var(--t-med);
+    /* Rail */
+    .story-rail { position: relative; }
+    .story-rail-line {
+      position: absolute; left: 27px; top: 0; bottom: 0; width: 2px;
+      background: var(--border);
+    }
+    .story-rail-fill {
+      position: absolute; left: 27px; top: 0; width: 2px; height: 0%;
+      background: linear-gradient(var(--accent), var(--accent2));
+      transition: height 0.2s linear;
+    }
+    .story-rail-nodes { position: relative; height: 100%; }
+    .rail-node {
+      position: absolute; left: 0; width: 56px; height: 56px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: var(--bg2); border: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 11px; color: var(--fg3);
+      transition: all var(--t-med);
       cursor: none;
-      display: flex; flex-direction: column; justify-content: flex-end;
+      transform: translateY(-50%);
     }
-    .proj-card:hover {
-      border-color: var(--border2);
-      transform: translateY(-4px);
-    }
-
-    /* Gradient accent on hover */
-    .proj-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      opacity: 0;
-      transition: opacity var(--t-med);
-    }
-    .proj-card:hover::before { opacity: 1; }
-
-    /* Card sizes */
-    .proj-card.wide { grid-column: span 7; }
-    .proj-card.tall { grid-row: span 2; grid-column: span 5; }
-    .proj-card.medium { grid-column: span 5; }
-    .proj-card.small { grid-column: span 4; }
-
-    /* Card accents by project */
-    .proj-card.kareer::before { background: radial-gradient(ellipse 80% 60% at 0% 100%, color-mix(in srgb,var(--accent) 8%,transparent), transparent); }
-    .proj-card.skicast::before { background: radial-gradient(ellipse 80% 60% at 100% 0%, color-mix(in srgb,var(--accent2) 8%,transparent), transparent); }
-    .proj-card.emotion::before { background: radial-gradient(ellipse 80% 60% at 100% 100%, color-mix(in srgb,var(--accent3) 6%,transparent), transparent); }
-    .proj-card.social::before  { background: radial-gradient(ellipse 80% 60% at 0% 0%, color-mix(in srgb,var(--accent) 7%,transparent), transparent); }
-    .proj-card.kisan::before   { background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb,#4ade80 8%,transparent), transparent); }
-
-    .proj-num {
-      position: absolute; top: 28px; right: 28px;
-      font-family: var(--font-mono);
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--fg3);
+    .rail-node.is-active {
+      border-color: var(--node-color, var(--accent));
+      color: var(--bg);
+      background: var(--node-color, var(--accent));
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--node-color, var(--accent)) 18%, transparent);
     }
 
-    .proj-top {
-      position: absolute; top: 28px; left: 36px;
-      display: flex; align-items: center; gap: 10px;
+    /* Chapters */
+    .story-chapters { display: flex; flex-direction: column; gap: 140px; }
+
+    .story-chapter {
+      display: flex; gap: 48px; align-items: center;
+      opacity: 0; transform: translateY(36px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
     }
-    .proj-emoji { font-size: 28px; }
-    .proj-category {
-      font-family: var(--font-mono);
-      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--fg3);
-      background: var(--bg3);
-      border: 1px solid var(--border);
+    .story-chapter.is-active { opacity: 1; transform: none; }
+    .story-chapter:nth-child(even) { flex-direction: row-reverse; }
+
+    .chapter-scene {
+      flex: 0 0 260px; height: 260px;
+      border-radius: var(--r-lg);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      background: color-mix(in srgb, var(--chap-color) 14%, var(--bg2));
+      border: 1px solid color-mix(in srgb, var(--chap-color) 30%, var(--border));
+    }
+    .chapter-scene::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 30% 20%, color-mix(in srgb, var(--chap-color) 30%, transparent), transparent 70%);
+    }
+    .chapter-scene i {
+      font-size: 84px; color: var(--chap-color);
+      position: relative; z-index: 1;
+      animation: scene-float 5s ease-in-out infinite;
+    }
+    .story-chapter.featured .chapter-scene { flex: 0 0 300px; height: 300px; }
+    @keyframes scene-float { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-10px); } }
+
+    .chapter-content { flex: 1; min-width: 0; }
+    .chapter-eyebrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .chapter-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--chap-color); }
+    .chapter-tag {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg3); background: var(--bg3); border: 1px solid var(--border);
       padding: 4px 10px; border-radius: var(--r-full);
     }
-
-    .proj-name {
-      font-family: var(--font-display);
-      font-size: clamp(28px, 3.5vw, 44px);
-      letter-spacing: 0.03em; line-height: 0.95;
-      color: var(--fg);
-      margin-top: 56px;
-      margin-bottom: 12px;
-    }
-    .proj-tagline {
-      font-size: 14px; color: var(--fg2); line-height: 1.65;
-      margin-bottom: 20px;
-    }
-
-    .proj-features {
-      display: flex; flex-direction: column; gap: 6px;
-      margin-bottom: 20px;
-    }
-    .proj-feature {
-      display: flex; align-items: baseline; gap: 8px;
-      font-size: 13px; color: var(--fg2);
-    }
-    .proj-feature::before {
-      content: '—'; color: var(--accent); flex-shrink: 0;
-      font-size: 10px;
-    }
-
-    .proj-stack {
-      display: flex; flex-wrap: wrap; gap: 6px;
-      margin-bottom: 24px;
-    }
-
-    .proj-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-    .proj-problem {
-      font-size: 12px; color: var(--fg3);
-      font-family: var(--font-mono);
-      text-transform: uppercase; letter-spacing: 0.1em;
-    }
-    .proj-link {
-      font-family: var(--font-mono);
-      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent);
-      display: flex; align-items: center; gap: 6px;
-      transition: gap var(--t-fast);
-    }
-    .proj-link:hover { gap: 10px; }
-
-    /* Featured badge */
-    .featured-badge {
-      position: absolute; top: 0; left: 36px;
-      background: var(--accent);
-      color: var(--bg);
-      font-family: var(--font-mono);
-      font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 0 0 var(--r-full) var(--r-full);
+    .chapter-featured-badge {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bg); background: var(--accent); padding: 3px 10px; border-radius: var(--r-full);
       font-weight: 600;
     }
 
-    @media(max-width:900px){
-      .proj-card.wide, .proj-card.tall, .proj-card.medium, .proj-card.small {
-        grid-column: span 12;
-        grid-row: span 1;
-      }
-      .projects-bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .chapter-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.4vw, 42px);
+      letter-spacing: 0.02em; line-height: 1;
+      margin-bottom: 16px;
+    }
+    .chapter-lead { font-size: 17px; color: var(--fg); font-weight: 500; margin-bottom: 10px; }
+    .chapter-body { font-size: 14px; line-height: 1.7; color: var(--fg2); max-width: 520px; margin-bottom: 22px; }
+
+    .chapter-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+
+    .chapter-footer {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+      padding-top: 18px; border-top: 1px solid var(--border);
+    }
+    .chapter-problem {
+      font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--fg3);
+    }
+    .chapter-cta {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--chap-color); display: flex; align-items: center; gap: 6px;
+      transition: gap var(--t-fast); text-decoration: none; cursor: none;
+    }
+    .chapter-cta:hover { gap: 10px; }
+    .chapter-status {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    @media (max-width: 900px) {
+      .story-wrap { grid-template-columns: 1fr; }
+      .story-rail { display: none; }
+      .story-chapter, .story-chapter:nth-child(even) { flex-direction: column; }
+      .chapter-scene { flex: 0 0 auto; width: 100%; height: 180px; }
+      .story-chapter.featured .chapter-scene { height: 200px; }
+      .story-chapters { gap: 88px; }
+      .story-index { position: static; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chapter-scene i { animation: none; }
+      .story-chapter { transition: opacity 0.3s linear; transform: none !important; }
+      .story-rail-fill { transition: none; }
+      .story-scroll-cue i { animation: none; }
     }
   </style>
 </head>
@@ -264,8 +273,9 @@
         <div class="hero-title-anim"><div class="hero-title-inner">Projects</div></div>
       </h1>
       <p class="body-text" style="max-width:500px;margin-top:20px;animation:fade-in-up 1s var(--ease) 0.5s both;opacity:0">
-        Five projects built to solve real problems — spanning AI, web development, and social tools.
+        Six chapters, six real problems solved — spanning AI, web development, and social impact.
       </p>
+      <div class="story-scroll-cue"><span>Begin the story</span><i class="fa-solid fa-chevron-down"></i></div>
     </div>
   </section>
   <style>
@@ -278,150 +288,167 @@
   <!-- PROJECTS BODY -->
   <section class="projects-body">
     <div class="container">
-      <div class="filter-bar">
-        <button class="filter-btn active" onclick="filterProjects('all', this)">All Projects</button>
-        <button class="filter-btn" onclick="filterProjects('ai', this)">AI / ML</button>
-        <button class="filter-btn" onclick="filterProjects('web', this)">Web Dev</button>
-        <button class="filter-btn" onclick="filterProjects('fullstack', this)">Full Stack</button>
+
+      <div class="story-index">
+        <span class="story-index-label">Browse by</span>
+        <button class="index-pill active" onclick="filterStory('all', this)">All Chapters</button>
+        <button class="index-pill" onclick="filterStory('ai', this)">AI / ML</button>
+        <button class="index-pill" onclick="filterStory('web', this)">Web Dev</button>
+        <button class="index-pill" onclick="filterStory('fullstack', this)">Full Stack</button>
       </div>
 
-      <div class="projects-bento">
+      <div class="story-wrap">
 
-        <!-- 01: Kareer Guide — Featured, Wide -->
-        <a href="https://kareer-guide.vercel.app/" target="_blank" class="proj-card wide kareer" data-cat="ai fullstack" data-reveal="blur" style="text-decoration:none; color:inherit; display:flex">
-          <div class="featured-badge"><i class="fa-solid fa-star"></i> Featured</div>
-          <div class="proj-top">
-            <span class="proj-emoji"><i class="fa-solid fa-bullseye"></i></span>
-            <span class="proj-category">AI · Career Tech</span>
-          </div>
-          <div class="proj-num">01</div>
-
-          <div class="proj-name">Kareer Guide</div>
-          <div class="proj-tagline">
-            The career compass every student deserves. Analyzes your skill set and generates personalized job recommendations with complete career roadmaps.
-          </div>
-          <div class="proj-stack">
-            <span class="chip">Python</span>
-            <span class="chip">AI/ML</span>
-            <span class="chip">JavaScript</span>
-            <span class="chip">MySQL</span>
-            <span class="chip">REST API</span>
-          </div>
-          <div class="proj-footer">
-            <span class="proj-problem">Solves: Career confusion for students</span>
-            <span class="proj-link">Deep Dive <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- 02: Ski Cast — Tall (side col) -->
-        <a href="https://ski-cast.vercel.app/" target="_blank" class="proj-card tall skicast" data-cat="web" data-reveal="right" style="text-decoration:none; color:inherit; display:flex">
-          <div class="proj-top">
-            <span class="proj-emoji"><i class="fa-solid fa-cloud-sun"></i></span>
-            <span class="proj-category">Web App</span>
-          </div>
-          <div class="proj-num">02</div>
-
-          <div class="proj-name">Ski Cast</div>
-          <div class="proj-tagline">Real-time global weather app with smart location-based detection.</div>
-          <div class="proj-features">
-            <div class="proj-feature">Live OpenWeather API data</div>
-            <div class="proj-feature">Auto location detection</div>
-            <div class="proj-feature">7-day forecast view</div>
-            <div class="proj-feature">Clean, responsive UI</div>
-          </div>
-          <div class="proj-stack">
-            <span class="chip">JavaScript</span>
-            <span class="chip">Weather API</span>
-            <span class="chip">HTML/CSS</span>
-          </div>
-          <div class="proj-footer">
-            <span class="proj-problem">Solves: Quick weather lookup</span>
-            <span class="proj-link">View <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- 03: Emotion Detector -->
-        <div class="proj-card medium emotion" data-cat="ai" data-reveal="left" data-reveal-delay="2">
-          <div class="proj-top">
-            <span class="proj-emoji"><i class="fa-solid fa-face-surprise"></i></span>
-            <span class="proj-category">AI · Computer Vision</span>
-          </div>
-          <div class="proj-num">03</div>
-
-          <div class="proj-name">Emotion Detector</div>
-          <div class="proj-tagline">Real-time facial emotion recognition using webcam feed — classifies 7 emotions in live video.</div>
-          <div class="proj-stack">
-            <span class="chip">Python</span>
-            <span class="chip">OpenCV</span>
-            <span class="chip">DeepFace</span>
-          </div>
-          <div class="proj-footer">
-            <span class="proj-problem">Solves: Human emotion analysis</span>
-          </div>
+        <div class="story-rail">
+          <div class="story-rail-line"></div>
+          <div class="story-rail-fill" id="railFill"></div>
+          <div class="story-rail-nodes" id="railNodes"></div>
         </div>
 
-        <!-- 04: Social Suite -->
-        <a href="https://socialsuite.vooho.in/" target="_blank" class="proj-card small social" data-cat="web fullstack" data-reveal="scale" data-reveal-delay="3" style="text-decoration:none; color:inherit; display:flex">
-          <div class="proj-top">
-            <span class="proj-emoji"><i class="fa-solid fa-mobile-screen-button"></i></span>
-            <span class="proj-category">Full Stack · SaaS</span>
-          </div>
-          <div class="proj-num">04</div>
+        <div class="story-chapters" id="storyChapters">
 
-          <div class="proj-name">Social Suite</div>
-          <div class="proj-tagline">Unified social media management — schedule, post, and manage across platforms.</div>
-          <div class="proj-stack">
-            <span class="chip">JS</span>
-            <span class="chip">PHP</span>
-            <span class="chip">MySQL</span>
-          </div>
-          <div class="proj-footer">
-            <span class="proj-problem">Solves: Multi-platform posting</span>
-            <span class="proj-link">View <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
+          <!-- Chapter 01: Kareer Guide -->
+          <article class="story-chapter featured" data-cat="ai fullstack" style="--chap-color: var(--accent)">
+            <div class="chapter-scene"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="chapter-content">
+              <div class="chapter-eyebrow">
+                <span class="chapter-num">Chapter 01</span>
+                <span class="chapter-tag">AI · Career Tech</span>
+                <span class="chapter-featured-badge"><i class="fa-solid fa-star"></i> Featured</span>
+              </div>
+              <h2 class="chapter-title">Kareer Guide</h2>
+              <p class="chapter-lead">Most students choose a career by guesswork.</p>
+              <p class="chapter-body">Kareer Guide replaces the guesswork with a real recommendation engine: it reads a student's skill set, scores it against live job-market data, and hands back a ranked list of roles with a roadmap for each one — built end-to-end on a Python backend, MySQL, and a REST API serving the JS front end.</p>
+              <div class="chapter-stack">
+                <span class="chip">Python</span>
+                <span class="chip">AI/ML</span>
+                <span class="chip">JavaScript</span>
+                <span class="chip">MySQL</span>
+                <span class="chip">REST API</span>
+              </div>
+              <div class="chapter-footer">
+                <span class="chapter-problem">Solves: Career confusion for students</span>
+                <a href="https://kareer-guide.vercel.app/" target="_blank" class="chapter-cta">Read the case <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </article>
 
-        <!-- 05: Kisan Sathi -->
-        <a href="https://kisansathi.vercel.app/" target="_blank" class="proj-card small kisan" data-cat="ai fullstack" data-reveal="right" data-reveal-delay="4" style="text-decoration:none; color:inherit; display:flex">
-          <div class="proj-top">
-            <span class="proj-emoji"><i class="fa-solid fa-wheat-awn"></i></span>
-            <span class="proj-category">AI · Social Impact</span>
-          </div>
-          <div class="proj-num">05</div>
+          <!-- Chapter 02: Ski Cast -->
+          <article class="story-chapter" data-cat="web" style="--chap-color: var(--accent2)">
+            <div class="chapter-scene"><i class="fa-solid fa-cloud-sun"></i></div>
+            <div class="chapter-content">
+              <div class="chapter-eyebrow">
+                <span class="chapter-num">Chapter 02</span>
+                <span class="chapter-tag">Web App</span>
+              </div>
+              <h2 class="chapter-title">Ski Cast</h2>
+              <p class="chapter-lead">Ten tabs open just to check if it'll rain.</p>
+              <p class="chapter-body">Ski Cast collapses that into one screen — it detects your location automatically, pulls live data straight from the OpenWeather API, and lays out a full seven-day forecast without the clutter most weather apps bury you in.</p>
+              <div class="chapter-stack">
+                <span class="chip">JavaScript</span>
+                <span class="chip">Weather API</span>
+                <span class="chip">HTML/CSS</span>
+              </div>
+              <div class="chapter-footer">
+                <span class="chapter-problem">Solves: Quick weather lookup</span>
+                <a href="https://ski-cast.vercel.app/" target="_blank" class="chapter-cta">Open the app <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </article>
 
-          <div class="proj-name">Kisan Sathi</div>
-          <div class="proj-tagline">Smart farming assistant with AI crop suggestions and IVR voice support for rural India.</div>
-          <div class="proj-stack">
-            <span class="chip">Python</span>
-            <span class="chip">AI</span>
-            <span class="chip">IVR</span>
-          </div>
-          <div class="proj-footer">
-            <span class="proj-problem">Solves: Farming decisions</span>
-            <span class="proj-link">View <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
+          <!-- Chapter 03: Emotion Detector -->
+          <article class="story-chapter" data-cat="ai" style="--chap-color: var(--accent3)">
+            <div class="chapter-scene"><i class="fa-solid fa-face-surprise"></i></div>
+            <div class="chapter-content">
+              <div class="chapter-eyebrow">
+                <span class="chapter-num">Chapter 03</span>
+                <span class="chapter-tag">AI · Computer Vision</span>
+              </div>
+              <h2 class="chapter-title">Emotion Detector</h2>
+              <p class="chapter-lead">A webcam can see more than a face.</p>
+              <p class="chapter-body">Emotion Detector watches a live video feed and classifies seven emotional states in real time, pairing OpenCV's vision pipeline with a DeepFace recognition model — a deep dive into computer vision before plugging it into anything user-facing.</p>
+              <div class="chapter-stack">
+                <span class="chip">Python</span>
+                <span class="chip">OpenCV</span>
+                <span class="chip">DeepFace</span>
+              </div>
+              <div class="chapter-footer">
+                <span class="chapter-problem">Solves: Human emotion analysis</span>
+                <span class="chapter-status">Prototype — not yet deployed</span>
+              </div>
+            </div>
+          </article>
 
-        <!-- 06: IVR System for Farmers -->
-        <a href="tel:04041893915" class="proj-card small ivr" data-cat="ai fullstack" data-reveal="up" data-reveal-delay="5" style="text-decoration:none; color:inherit; display:flex">
-          <div class="proj-top">
-            <span class="proj-emoji"><i class="fa-solid fa-phone-volume"></i></span>
-            <span class="proj-category">IVR · Voice AI</span>
-          </div>
-          <div class="proj-num">06</div>
+          <!-- Chapter 04: Social Suite -->
+          <article class="story-chapter" data-cat="web fullstack" style="--chap-color:#f472b6">
+            <div class="chapter-scene"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <div class="chapter-content">
+              <div class="chapter-eyebrow">
+                <span class="chapter-num">Chapter 04</span>
+                <span class="chapter-tag">Full Stack · SaaS</span>
+              </div>
+              <h2 class="chapter-title">Social Suite</h2>
+              <p class="chapter-lead">Five platforms, five logins, one missed post.</p>
+              <p class="chapter-body">Social Suite pulls scheduling and publishing into a single dashboard, so a post written once goes out across every connected platform — a full-stack build on PHP and MySQL with a JavaScript front end.</p>
+              <div class="chapter-stack">
+                <span class="chip">JS</span>
+                <span class="chip">PHP</span>
+                <span class="chip">MySQL</span>
+              </div>
+              <div class="chapter-footer">
+                <span class="chapter-problem">Solves: Multi-platform posting</span>
+                <a href="https://socialsuite.vooho.in/" target="_blank" class="chapter-cta">Open the app <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </article>
 
-          <div class="proj-name">IVR System</div>
-          <div class="proj-tagline">Automated voice assistance for farmers. Provides crop advice and weather info over a simple phone call.</div>
-          <div class="proj-stack">
-            <span class="chip">Python</span>
-            <span class="chip">IVR System</span>
-            <span class="chip">Twilio</span>
-          </div>
-          <div class="proj-footer">
-            <span class="proj-problem">Solves: Rural digital divide</span>
-            <span class="proj-link">Call Now <i class="fa-solid fa-phone"></i></span>
-          </div>
-        </a>
+          <!-- Chapter 05: Kisan Sathi -->
+          <article class="story-chapter" data-cat="ai fullstack" style="--chap-color:#4ade80">
+            <div class="chapter-scene"><i class="fa-solid fa-wheat-awn"></i></div>
+            <div class="chapter-content">
+              <div class="chapter-eyebrow">
+                <span class="chapter-num">Chapter 05</span>
+                <span class="chapter-tag">AI · Social Impact</span>
+              </div>
+              <h2 class="chapter-title">Kisan Sathi</h2>
+              <p class="chapter-lead">Most farming apps assume a smartphone and a data plan.</p>
+              <p class="chapter-body">Kisan Sathi doesn't. It pairs AI-driven crop suggestions with IVR voice support, so a farmer without a smartphone can still call in and get an answer — built for rural India first, not retrofitted for it.</p>
+              <div class="chapter-stack">
+                <span class="chip">Python</span>
+                <span class="chip">AI</span>
+                <span class="chip">IVR</span>
+              </div>
+              <div class="chapter-footer">
+                <span class="chapter-problem">Solves: Farming decisions</span>
+                <a href="https://kisansathi.vercel.app/" target="_blank" class="chapter-cta">Open the app <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Chapter 06: IVR System -->
+          <article class="story-chapter" data-cat="ai fullstack" style="--chap-color:#fbbf24">
+            <div class="chapter-scene"><i class="fa-solid fa-phone-volume"></i></div>
+            <div class="chapter-content">
+              <div class="chapter-eyebrow">
+                <span class="chapter-num">Chapter 06</span>
+                <span class="chapter-tag">IVR · Voice AI</span>
+              </div>
+              <h2 class="chapter-title">IVR System</h2>
+              <p class="chapter-lead">Sometimes the most accessible interface is a phone call.</p>
+              <p class="chapter-body">This IVR system gives farmers crop advice and weather updates over an ordinary voice call — no app, no internet connection, no smartphone required — running on Python and Twilio.</p>
+              <div class="chapter-stack">
+                <span class="chip">Python</span>
+                <span class="chip">IVR System</span>
+                <span class="chip">Twilio</span>
+              </div>
+              <div class="chapter-footer">
+                <span class="chapter-problem">Solves: Rural digital divide</span>
+                <a href="tel:04041893915" class="chapter-cta">Call now <i class="fa-solid fa-phone"></i></a>
+              </div>
+            </div>
+          </article>
+
+        </div>
       </div>
     </div>
   </section>
@@ -442,18 +469,100 @@
   <script src="shared.js"></script>
   <script src="cms-render.js"></script>
   <script>
-    function filterProjects(cat, btn) {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.proj-card').forEach(card => {
-        const cats = card.dataset.cat || '';
-        const show = cat === 'all' || cats.includes(cat);
-        card.style.opacity = show ? '1' : '0.2';
-        card.style.pointerEvents = show ? '' : 'none';
-        card.style.transform = show ? '' : 'scale(0.97)';
-        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  window.initStoryChapters = function(){
+    if (window.__storyChaptersInit && !arguments.length) return;
+    window.__storyChaptersInit = true;
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var chapters = Array.prototype.slice.call(document.querySelectorAll('.story-chapter'));
+    var railNodes = document.getElementById('railNodes');
+    var railFill = document.getElementById('railFill');
+    var railEl = document.querySelector('.story-rail');
+
+    // Position rail nodes against each chapter's vertical center
+    function buildNodes(){
+      if (!railNodes || !railEl) return;
+      railNodes.innerHTML = '';
+      var railTop = railEl.getBoundingClientRect().top + window.scrollY;
+      chapters.forEach(function(ch, i){
+        var rect = ch.getBoundingClientRect();
+        var center = rect.top + window.scrollY + rect.height / 2 - railTop;
+        var color = getComputedStyle(ch).getPropertyValue('--chap-color').trim();
+        var node = document.createElement('button');
+        node.type = 'button';
+        node.className = 'rail-node';
+        node.style.top = center + 'px';
+        node.style.setProperty('--node-color', color);
+        node.textContent = String(i + 1).padStart(2, '0');
+        node.setAttribute('aria-label', 'Jump to chapter ' + (i + 1));
+        node.addEventListener('click', function(){
+          ch.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        });
+        railNodes.appendChild(node);
+        ch.__railNode = node;
       });
     }
+
+    // Scroll-linked rail progress fill
+    var ticking = false;
+    function updateFill(){
+      ticking = false;
+      if (!railEl) return;
+      var rect = railEl.getBoundingClientRect();
+      var total = rect.height;
+      if (total <= 0) return;
+      var viewportRef = window.innerHeight * 0.5;
+      var progressed = viewportRef - rect.top;
+      var pct = Math.max(0, Math.min(1, progressed / total));
+      if (railFill) railFill.style.height = (pct * 100) + '%';
+    }
+    function onScroll(){
+      if (!ticking){
+        ticking = true;
+        requestAnimationFrame(updateFill);
+      }
+    }
+
+    // Reveal + active chapter / node highlighting
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          entry.target.classList.toggle('is-active', entry.isIntersecting);
+          if (entry.target.__railNode){
+            entry.target.__railNode.classList.toggle('is-active', entry.isIntersecting);
+          }
+        });
+      }, { threshold: 0.35 });
+      chapters.forEach(function(ch){ io.observe(ch); });
+    } else {
+      chapters.forEach(function(ch){ ch.classList.add('is-active'); });
+    }
+
+    buildNodes();
+    window.addEventListener('load', buildNodes);
+    window.addEventListener('resize', buildNodes);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateFill();
+
+    // Story index (filter / jump)
+    window.filterStory = function(cat, btn){
+      document.querySelectorAll('.index-pill').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var firstMatch = null;
+      chapters.forEach(function(ch){
+        var cats = ch.dataset.cat || '';
+        var show = cat === 'all' || cats.indexOf(cat) !== -1;
+        ch.style.opacity = show ? '' : '0.18';
+        ch.style.pointerEvents = show ? '' : 'none';
+        ch.style.filter = show ? '' : 'saturate(0.3)';
+        if (show && !firstMatch) firstMatch = ch;
+      });
+      if (cat !== 'all' && firstMatch){
+        firstMatch.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      }
+    };
+  };
+  initStoryChapters();
   </script>
 </body>
 </html>

@@ -45,35 +45,36 @@ const CmsRenderer = (() => {
   }
 
   function renderProjects(cms) {
-    const grid = document.querySelector('.projects-bento');
+    const grid = document.querySelector('.story-chapters');
     if (!grid || !cms.projects || cms.projects.length === 0) return;
+
+    const colors = ['var(--accent)', 'var(--accent2)', 'var(--accent3)', '#f472b6', '#4ade80', '#fbbf24'];
 
     grid.innerHTML = cms.projects.map((proj, i) => {
       const num = String(i + 1).padStart(2, '0');
       const hasUrl = !!proj.url;
-      const outerTag = hasUrl ? 'a' : 'div';
-      const outerAttr = hasUrl ? `href="${proj.url}" target="_blank"` : '';
+      const color = colors[i % colors.length];
       return `
-        <${outerTag} ${outerAttr} class="proj-card medium" data-reveal="scale" style="text-decoration:none;color:inherit;display:flex">
-          <div class="proj-top">
-            <span class="proj-emoji">${proj.emoji || '🚀'}</span>
-            <span class="proj-category">${proj.desc ? proj.desc.substring(0, 30) : 'Project'}</span>
+        <article class="story-chapter ${i === 0 ? 'featured' : ''}" data-cat="all" style="--chap-color: ${color}">
+          <div class="chapter-scene"><i class="${proj.emoji ? 'fa-solid ' + proj.emoji : 'fa-solid fa-code'}"></i></div>
+          <div class="chapter-content">
+            <div class="chapter-eyebrow">
+              <span class="chapter-num">Chapter ${num}</span>
+              <span class="chapter-tag">${proj.desc ? proj.desc.substring(0, 30) : 'Project'}</span>
+              ${i === 0 ? '<span class="chapter-featured-badge"><i class="fa-solid fa-star"></i> Featured</span>' : ''}
+            </div>
+            <h2 class="chapter-title">${proj.name}</h2>
+            <p class="chapter-body">${(proj.features || []).join('. ') || 'No description available.'}</p>
+            ${proj.tech && proj.tech.length ? `
+            <div class="chapter-stack">
+              ${proj.tech.map(t => `<span class="chip">${t}</span>`).join('')}
+            </div>` : ''}
+            <div class="chapter-footer">
+              <span class="chapter-problem">${(proj.tech || []).length} technologies</span>
+              ${hasUrl ? `<a href="${proj.url}" target="_blank" class="chapter-cta">View project <i class="fa-solid fa-arrow-right"></i></a>` : '<span class="chapter-status">Not yet deployed</span>'}
+            </div>
           </div>
-          <div class="proj-num">${num}</div>
-          <div class="proj-name">${proj.name}</div>
-          ${proj.features && proj.features.length ? `
-          <div class="proj-features">
-            ${proj.features.map(f => `<div class="proj-feature">${f}</div>`).join('')}
-          </div>` : ''}
-          ${proj.tech && proj.tech.length ? `
-          <div class="proj-stack">
-            ${proj.tech.map(t => `<span class="chip">${t}</span>`).join('')}
-          </div>` : ''}
-          <div class="proj-footer">
-            <span class="proj-problem">${(proj.tech || []).length} technologies</span>
-            ${hasUrl ? '<span class="proj-link">View <i class="fa-solid fa-arrow-right"></i></span>' : ''}
-          </div>
-        </${outerTag}>
+        </article>
       `;
     }).join('');
   }
@@ -103,8 +104,11 @@ const CmsRenderer = (() => {
     if (page === 'skills') renderSkills(cms);
     if (page === 'projects') {
       renderProjects(cms);
-      const filterBar = document.querySelector('.filter-bar');
-      if (filterBar) filterBar.style.display = 'none';
+      const storyIndex = document.querySelector('.story-index');
+      if (storyIndex) storyIndex.style.display = 'none';
+      if (typeof initStoryChapters === 'function') {
+        initStoryChapters(true);
+      }
     }
     if (typeof Revealer !== 'undefined') {
       setTimeout(() => {
