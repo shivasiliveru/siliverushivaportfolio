@@ -86,12 +86,20 @@ const CmsRenderer = (() => {
     if (aboutImg) aboutImg.src = cms.profileImage;
   }
 
+  function renderResume(cms) {
+    if (!cms.resumeUrl) return;
+    document.querySelectorAll('a[href*="drive.google.com"], a.mobile-resume, a.resume-nav-btn').forEach(link => {
+      link.href = cms.resumeUrl;
+    });
+  }
+
   function init() {
     const page = document.body.dataset.page;
     const cms = loadCMS();
     if (!cms) return;
 
     renderImage(cms);
+    renderResume(cms);
     if (page === 'skills') renderSkills(cms);
     if (page === 'projects') {
       renderProjects(cms);

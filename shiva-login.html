@@ -94,6 +94,7 @@
       text-transform: uppercase;
       font-weight: 600;
       transition: all var(--t-fast);
+      cursor: pointer;
     }
     .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 30%, transparent); }
     .auth-error {
@@ -120,6 +121,7 @@
       text-transform: uppercase;
       color: var(--fg2);
       transition: all var(--t-fast);
+      cursor: pointer;
     }
     .cms-tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
     .cms-tab:hover { border-color: var(--accent); color: var(--fg); }
@@ -178,6 +180,7 @@
       text-transform: uppercase;
       font-weight: 600;
       transition: all var(--t-fast);
+      cursor: pointer;
     }
     .cms-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 30%, transparent); }
     .cms-submit.danger { background: var(--accent3); }
@@ -219,6 +222,7 @@
       background: var(--bg3);
       color: var(--fg2);
       transition: all var(--t-fast);
+      cursor: pointer;
     }
     .cms-item-btn.edit:hover { border-color: var(--accent); color: var(--accent); }
     .cms-item-btn.delete:hover { border-color: var(--accent3); color: var(--accent3); }
@@ -296,6 +300,7 @@
       text-transform: uppercase;
       color: var(--fg3);
       transition: color var(--t-fast);
+      cursor: pointer;
     }
     .logout-btn:hover { color: var(--accent3); }
 
@@ -437,6 +442,15 @@
             <button class="cms-submit danger" id="removeImageBtn" style="margin-left:8px">Remove <i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
+        <div class="cms-form">
+          <h3>Resume Link</h3>
+          <p style="font-size:14px;color:var(--fg2);margin-bottom:16px">Set the Google Drive or direct link to your resume. Updates across all pages.</p>
+          <div class="form-row">
+            <label>Resume URL</label>
+            <input type="text" id="resumeUrl" placeholder="https://drive.google.com/..." value="https://drive.google.com/file/d/1Of1FwjZ_WqTw26CGHJ4lIZG7Azq8mX9m/view?usp=sharing"/>
+          </div>
+          <button class="cms-submit" id="saveResumeBtn">Save Resume Link <i class="fa-solid fa-check"></i></button>
+        </div>
       </div>
 
       <!-- === EXPORT TAB === -->
@@ -465,6 +479,8 @@
     const STORAGE_KEY = 'shiva-portfolio-cms';
 
     // ── DEFAULT DATA (matches hardcoded portfolio) ──
+    const DEFAULT_RESUME_URL = 'https://drive.google.com/file/d/1Of1FwjZ_WqTw26CGHJ4lIZG7Azq8mX9m/view?usp=sharing';
+
     const DEFAULT_DATA = {
       skills: [
         { id: 'default-1', category: 'Frontend', desc: 'UI & Experience', color: '#667eea', icon: 'fa-solid fa-palette', skills: ['HTML5', 'CSS3', 'JavaScript', 'Responsive Design', 'Tailwind CSS', 'DOM Manipulation'] },
@@ -480,7 +496,8 @@
         { id: 'default-p5', name: 'Kisan Sathi', desc: 'AI · Social Impact', url: 'https://kisansathi.vercel.app/', emoji: '🌾', tech: ['Python', 'AI', 'IVR'], features: ['Smart farming assistant', 'AI crop suggestions', 'IVR voice support for rural India'] },
         { id: 'default-p6', name: 'IVR System', desc: 'IVR · Voice AI', url: 'tel:04041893915', emoji: '📞', tech: ['Python', 'IVR System', 'Twilio'], features: ['Automated voice assistance', 'Crop advice via phone', 'Weather info over call'] }
       ],
-      profileImage: ''
+      profileImage: '',
+      resumeUrl: DEFAULT_RESUME_URL
     };
 
     // ── STATE ──
@@ -546,6 +563,7 @@ const authError = document.getElementById('authError');
       if (!state.skills) state.skills = [];
       if (!state.projects) state.projects = [];
       if (!state.profileImage) state.profileImage = '';
+      if (!state.resumeUrl) state.resumeUrl = DEFAULT_RESUME_URL;
     }
 
     function saveState() {
@@ -711,6 +729,16 @@ const authError = document.getElementById('authError');
       updateImagePreview();
     });
 
+    document.getElementById('saveResumeBtn').addEventListener('click', () => {
+      const url = document.getElementById('resumeUrl').value.trim();
+      if (url) {
+        state.resumeUrl = url;
+        saveState();
+      } else {
+        showToast('Please enter a valid URL', true);
+      }
+    });
+
     function updateImagePreview() {
       const img = document.getElementById('cmsImagePreview');
       const placeholder = document.getElementById('cmsImagePlaceholder');
@@ -722,6 +750,7 @@ const authError = document.getElementById('authError');
         img.style.display = 'none';
         placeholder.style.display = 'inline';
       }
+      document.getElementById('resumeUrl').value = state.resumeUrl || DEFAULT_RESUME_URL;
     }
 
     // ── RENDER ──
