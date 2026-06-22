@@ -304,9 +304,201 @@
     }
     .logout-btn:hover { color: var(--accent3); }
 
+    /* ── LIVE PREVIEW ── */
+    .cms-preview {
+      background: var(--bg);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+    .preview-empty-state {
+      padding: 80px 40px;
+      text-align: center;
+      color: var(--fg3);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* Hero */
+    .pv-hero {
+      position: relative;
+      padding: 48px 40px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .pv-hero-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+    .pv-hero-content {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: space-between; gap: 32px;
+    }
+    .pv-hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      padding: 5px 12px; border-radius: var(--r-full);
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .pv-hero-pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
+      animation: pv-pulse 2s ease infinite;
+    }
+    @keyframes pv-pulse {
+      0%  { box-shadow: 0 0 0 0   color-mix(in srgb, var(--accent) 50%, transparent); }
+      70% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%,  transparent); }
+      100%{ box-shadow: 0 0 0 0   color-mix(in srgb, var(--accent) 0%,  transparent); }
+    }
+    .pv-hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 8vw, 80px);
+      letter-spacing: 0.04em; line-height: 0.88;
+      color: var(--fg);
+    }
+    .pv-hero-accent { color: var(--accent); }
+    .pv-hero-sub {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: clamp(16px, 2vw, 22px);
+      color: var(--fg2);
+      margin-top: 8px;
+    }
+    .pv-hero-right img {
+      width: 120px; height: 120px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 12px 32px color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+    .pv-hero-right img[src=""], .pv-hero-right img:not([src]) { display: none; }
+
+    /* Section headers */
+    .pv-section {
+      padding: 48px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pv-section-header { margin-bottom: 28px; }
+    .pv-eyebrow {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 8px;
+      display: block;
+    }
+    .pv-heading {
+      font-family: var(--font-display);
+      font-size: 32px; letter-spacing: 0.02em;
+      color: var(--fg);
+    }
+
+    /* Skills grid */
+    .pv-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .pv-skill-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pv-skill-card:hover {
+      border-color: var(--accent);
+    }
+    .pv-skill-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      background: var(--bg3);
+      margin-bottom: 14px;
+    }
+    .pv-skill-name {
+      font-family: var(--font-display);
+      font-size: 22px; letter-spacing: 0.04em;
+      color: var(--fg);
+    }
+    .pv-skill-role {
+      font-family: var(--font-mono);
+      font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--fg3);
+      margin: 4px 0 12px;
+    }
+    .pv-skill-tags {
+      display: flex; flex-wrap: wrap; gap: 4px;
+    }
+    .pv-skill-tag {
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 3px 10px; border-radius: var(--r-full);
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
+      color: var(--fg2);
+    }
+
+    /* Project items */
+    .pv-projects-list { display: flex; flex-direction: column; }
+    .pv-project-row {
+      display: grid;
+      grid-template-columns: 36px 1fr 160px;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pv-project-row:last-child { border-bottom: none; }
+    .pv-project-num {
+      font-family: var(--font-mono); font-size: 11px; color: var(--fg3);
+    }
+    .pv-project-info { min-width: 0; }
+    .pv-project-name {
+      font-family: var(--font-display);
+      font-size: 20px; letter-spacing: 0.03em;
+      color: var(--fg);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pv-project-name .pv-project-icon { font-size: 16px; }
+    .pv-project-desc {
+      font-size: 12px; color: var(--fg2);
+      margin-top: 2px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .pv-project-tech {
+      display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end;
+    }
+    .pv-project-tech .chip {
+      font-size: 8px; padding: 2px 8px;
+    }
+    .pv-project-status {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg3); text-align: right;
+    }
+    .pv-project-status.has-url { color: var(--accent); }
+
+    /* Resume strip */
+    .pv-resume-strip {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .pv-resume-text {
+      display: flex; align-items: center; gap: 14px;
+      flex: 1; min-width: 0;
+    }
+
     @media(max-width:900px){
       .form-grid { grid-template-columns: 1fr; }
       .cms-item { flex-direction: column; align-items: flex-start; }
+      .pv-skills-grid { grid-template-columns: 1fr; gap: 14px; }
+      .pv-project-row { grid-template-columns: 28px 1fr; gap: 8px; }
+      .pv-project-tech { grid-column: 1 / -1; justify-content: flex-start; }
+      .pv-hero { padding: 32px 20px; }
+      .pv-section { padding: 32px 20px; }
     }
   </style>
 </head>
@@ -341,6 +533,7 @@
         <button class="cms-tab active" data-tab="skills">Skills</button>
         <button class="cms-tab" data-tab="projects">Projects</button>
         <button class="cms-tab" data-tab="image">Image</button>
+        <button class="cms-tab" data-tab="preview">Preview</button>
         <button class="cms-tab" data-tab="export">Export</button>
       </div>
 
@@ -401,6 +594,10 @@
               <label>Description</label>
               <textarea id="projectDesc" placeholder="Brief description of the project..."></textarea>
             </div>
+            <div class="form-row full">
+              <label>Hook (bold one-liner)</label>
+              <textarea id="projectHook" placeholder="e.g. Most students choose a career by guesswork." style="min-height:40px"></textarea>
+            </div>
             <div class="form-row">
               <label>URL</label>
               <input type="text" id="projectUrl" placeholder="https://..." />
@@ -453,6 +650,72 @@
         </div>
       </div>
 
+      <!-- === PREVIEW TAB === -->
+      <div class="cms-panel" data-panel="preview" style="display:none">
+        <div class="cms-form">
+          <h3>Portfolio Preview</h3>
+          <p style="font-size:14px;color:var(--fg2);margin-bottom:16px">This is how your portfolio will look with the current CMS data. Add or edit content in the other tabs, then come here to preview.</p>
+        </div>
+        <div class="cms-preview" id="livePreview">
+          <div class="preview-empty-state" id="previewEmpty">
+            <i class="fa-solid fa-eye" style="font-size:48px;color:var(--fg3);margin-bottom:16px"></i>
+            <p>No content to preview yet. Add some skills, projects, and a profile image first.</p>
+          </div>
+
+          <!-- Preview Hero -->
+          <div class="pv-hero" id="pvHero" style="display:none">
+            <div class="pv-hero-bg"></div>
+            <div class="pv-hero-content">
+              <div class="pv-hero-left">
+                <div class="pv-hero-tag">
+                  <span class="pv-hero-pulse"></span>
+                  Online & Available
+                </div>
+                <h1 class="pv-hero-name">SHI<span class="pv-hero-accent">V</span>A</h1>
+                <p class="pv-hero-sub">Full Stack Developer & AI Enthusiast</p>
+              </div>
+              <div class="pv-hero-right">
+                <img id="pvHeroImage" src="" alt="Profile"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview Skills -->
+          <div class="pv-section" id="pvSkills" style="display:none">
+            <div class="pv-section-header">
+              <span class="pv-eyebrow">Skill Categories</span>
+              <h2 class="pv-heading">What I Know</h2>
+            </div>
+            <div class="pv-skills-grid" id="pvSkillsGrid"></div>
+          </div>
+
+          <!-- Preview Projects -->
+          <div class="pv-section" id="pvProjects" style="display:none">
+            <div class="pv-section-header">
+              <span class="pv-eyebrow">Selected Work</span>
+              <h2 class="pv-heading">Projects that matter</h2>
+            </div>
+            <div class="pv-projects-list" id="pvProjectsList"></div>
+          </div>
+
+          <!-- Preview Resume -->
+          <div class="pv-section" id="pvResume" style="display:none">
+            <div class="pv-resume-strip">
+              <div class="pv-resume-text">
+                <i class="fa-solid fa-file-pdf" style="color:var(--accent);font-size:24px"></i>
+                <div>
+                  <strong style="color:var(--fg)">Resume URL set</strong>
+                  <span style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);display:block;word-break:break-all" id="pvResumeUrl"></span>
+                </div>
+              </div>
+              <span class="chip" style="background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:color-mix(in srgb,var(--accent) 30%,transparent);color:var(--accent)">
+                <i class="fa-solid fa-check"></i> Active
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- === EXPORT TAB === -->
       <div class="cms-panel" data-panel="export" style="display:none">
         <div class="cms-form">
@@ -489,12 +752,12 @@
         { id: 'default-4', category: 'Tools & DevOps', desc: 'Workflow & Automation', color: '#4ade80', icon: 'fa-solid fa-tools', skills: ['Git & GitHub', 'VS Code', 'XAMPP', 'Postman', 'API Testing'] }
       ],
       projects: [
-        { id: 'default-p1', name: 'Kareer Guide', desc: 'AI · Career Tech', url: 'https://kareer-guide.vercel.app/', emoji: 'fa-bullseye', tech: ['Python', 'AI/ML', 'JavaScript', 'MySQL', 'REST API'], features: ['AI-powered career recommendations', 'Personalized job matching', 'Complete career roadmaps'] },
-        { id: 'default-p2', name: 'Ski Cast', desc: 'Web App', url: 'https://ski-cast.vercel.app/', emoji: 'fa-cloud-sun', tech: ['JavaScript', 'Weather API', 'HTML/CSS'], features: ['Real-time OpenWeather API data', 'Auto location detection', '7-day forecast view', 'Clean responsive UI'] },
-        { id: 'default-p3', name: 'Emotion Detector', desc: 'AI · Computer Vision', url: '', emoji: 'fa-face-surprise', tech: ['Python', 'OpenCV', 'DeepFace'], features: ['Real-time facial emotion recognition', '7 emotion classification', 'Live webcam feed processing'] },
-        { id: 'default-p4', name: 'Social Suite', desc: 'Full Stack · SaaS', url: 'https://socialsuite.vooho.in/', emoji: 'fa-mobile-screen-button', tech: ['JS', 'PHP', 'MySQL'], features: ['Multi-platform social posting', 'Content scheduling', 'Unified dashboard'] },
-        { id: 'default-p5', name: 'Kisan Sathi', desc: 'AI · Social Impact', url: 'https://kisansathi.vercel.app/', emoji: 'fa-wheat-awn', tech: ['Python', 'AI', 'IVR'], features: ['Smart farming assistant', 'AI crop suggestions', 'IVR voice support for rural India'] },
-        { id: 'default-p6', name: 'IVR System', desc: 'IVR · Voice AI', url: 'tel:04041893915', emoji: 'fa-phone-volume', tech: ['Python', 'IVR System', 'Twilio'], features: ['Automated voice assistance', 'Crop advice via phone', 'Weather info over call'] }
+        { id: 'default-p1', name: 'Kareer Guide', desc: 'AI · Career Tech', hook: 'Most students choose a career by guesswork.', url: 'https://kareer-guide.vercel.app/', emoji: 'fa-bullseye', tech: ['Python', 'AI/ML', 'JavaScript', 'MySQL', 'REST API'], features: ['AI-powered career recommendations', 'Personalized job matching', 'Complete career roadmaps'] },
+        { id: 'default-p2', name: 'Ski Cast', desc: 'Web App', hook: 'Ten tabs open just to check if it will rain.', url: 'https://ski-cast.vercel.app/', emoji: 'fa-cloud-sun', tech: ['JavaScript', 'Weather API', 'HTML/CSS'], features: ['Real-time OpenWeather API data', 'Auto location detection', '7-day forecast view', 'Clean responsive UI'] },
+        { id: 'default-p3', name: 'Emotion Detector', desc: 'AI · Computer Vision', hook: 'A webcam can see more than a face.', url: '', emoji: 'fa-face-surprise', tech: ['Python', 'OpenCV', 'DeepFace'], features: ['Real-time facial emotion recognition', '7 emotion classification', 'Live webcam feed processing'] },
+        { id: 'default-p4', name: 'Social Suite', desc: 'Full Stack · SaaS', hook: 'Five platforms, five logins, one missed post.', url: 'https://socialsuite.vooho.in/', emoji: 'fa-mobile-screen-button', tech: ['JS', 'PHP', 'MySQL'], features: ['Multi-platform social posting', 'Content scheduling', 'Unified dashboard'] },
+        { id: 'default-p5', name: 'Kisan Sathi', desc: 'AI · Social Impact', hook: 'Most farming apps assume a smartphone and a data plan.', url: 'https://kisansathi.vercel.app/', emoji: 'fa-wheat-awn', tech: ['Python', 'AI', 'IVR'], features: ['Smart farming assistant', 'AI crop suggestions', 'IVR voice support for rural India'] },
+        { id: 'default-p6', name: 'IVR System', desc: 'IVR · Voice AI', hook: 'Sometimes the most accessible interface is a phone call.', url: 'tel:04041893915', emoji: 'fa-phone-volume', tech: ['Python', 'IVR System', 'Twilio'], features: ['Automated voice assistance', 'Crop advice via phone', 'Weather info over call'] }
       ],
       profileImage: '',
       resumeUrl: DEFAULT_RESUME_URL
@@ -590,6 +853,7 @@ const authError = document.getElementById('authError');
         if (panel) panel.style.display = 'block';
         if (tab.dataset.tab === 'export') updateExport();
         if (tab.dataset.tab === 'image') updateImagePreview();
+        if (tab.dataset.tab === 'preview') renderLivePreview();
         updatePreview();
       });
     });
@@ -655,6 +919,7 @@ const authError = document.getElementById('authError');
     function saveProject() {
       const name = document.getElementById('projectName').value.trim();
       const desc = document.getElementById('projectDesc').value.trim();
+      const hook = document.getElementById('projectHook').value.trim();
       const url = document.getElementById('projectUrl').value.trim();
       const emoji = document.getElementById('projectEmoji').value.trim();
       const rawTech = document.getElementById('projectTech').value.trim();
@@ -665,7 +930,7 @@ const authError = document.getElementById('authError');
       const tech = rawTech ? rawTech.split(',').map(s => s.trim()).filter(Boolean) : [];
       const features = rawFeatures ? rawFeatures.split('\n').map(s => s.trim()).filter(Boolean) : [];
 
-      const projectData = { name, desc, url, emoji: emoji || '🚀', tech, features };
+      const projectData = { name, desc, hook, url, emoji: emoji || '🚀', tech, features };
 
       if (editId) {
         const idx = state.projects.findIndex(p => p.id === editId);
@@ -684,6 +949,7 @@ const authError = document.getElementById('authError');
       document.getElementById('editProjectId').value = id;
       document.getElementById('projectName').value = project.name || '';
       document.getElementById('projectDesc').value = project.desc || '';
+      document.getElementById('projectHook').value = project.hook || '';
       document.getElementById('projectUrl').value = project.url || '';
       document.getElementById('projectEmoji').value = project.emoji || '🚀';
       document.getElementById('projectTech').value = (project.tech || []).join(', ');
@@ -696,6 +962,7 @@ const authError = document.getElementById('authError');
       document.getElementById('editProjectId').value = '';
       document.getElementById('projectName').value = '';
       document.getElementById('projectDesc').value = '';
+      document.getElementById('projectHook').value = '';
       document.getElementById('projectUrl').value = '';
       document.getElementById('projectEmoji').value = '🚀';
       document.getElementById('projectTech').value = '';
@@ -758,6 +1025,7 @@ const authError = document.getElementById('authError');
       renderSkills();
       renderProjects();
       updatePreview();
+      renderLivePreview();
     }
 
     function renderSkills() {
@@ -813,6 +1081,104 @@ const authError = document.getElementById('authError');
           <p>${item.sub}</p>
         </div>
       `).join('');
+    }
+
+    // ── LIVE PREVIEW ──
+    function renderLivePreview() {
+      const pvSkills = document.getElementById('pvSkills');
+      const pvProjects = document.getElementById('pvProjects');
+      const pvResume = document.getElementById('pvResume');
+      const pvHero = document.getElementById('pvHero');
+      const pvEmpty = document.getElementById('previewEmpty');
+
+      const hasSkills = state.skills && state.skills.length > 0;
+      const hasProjects = state.projects && state.projects.length > 0;
+      const hasImage = !!state.profileImage;
+
+      if (!hasSkills && !hasProjects) {
+        pvEmpty.style.display = 'block';
+        pvHero.style.display = 'none';
+        pvSkills.style.display = 'none';
+        pvProjects.style.display = 'none';
+        pvResume.style.display = 'none';
+        return;
+      }
+      pvEmpty.style.display = 'none';
+
+      // Hero
+      pvHero.style.display = hasImage ? 'block' : 'none';
+      const pvHeroImg = document.getElementById('pvHeroImage');
+      if (hasImage) {
+        pvHeroImg.src = state.profileImage;
+        pvHeroImg.style.display = 'block';
+      } else {
+        pvHeroImg.src = '';
+        pvHeroImg.style.display = 'none';
+      }
+
+      // Skills
+      if (hasSkills) {
+        pvSkills.style.display = 'block';
+        const grid = document.getElementById('pvSkillsGrid');
+        grid.innerHTML = state.skills.map(s => {
+          const color = s.color || 'var(--accent)';
+          const icon = s.icon || 'fa-solid fa-code';
+          return `
+            <div class="pv-skill-card">
+              <div class="pv-skill-avatar" style="color:${color}"><i class="${icon}"></i></div>
+              <div class="pv-skill-name">${s.category}</div>
+              <div class="pv-skill-role">${s.desc || ''} ${(s.skills || []).length} skills</div>
+              <div class="pv-skill-tags">
+                ${(s.skills || []).map(t => `<span class="pv-skill-tag">${t}</span>`).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        pvSkills.style.display = 'none';
+      }
+
+      // Projects
+      if (hasProjects) {
+        pvProjects.style.display = 'block';
+        const list = document.getElementById('pvProjectsList');
+        const colors = ['var(--accent)', 'var(--accent2)', 'var(--accent3)', '#f472b6', '#4ade80', '#fbbf24'];
+        list.innerHTML = state.projects.map((p, i) => {
+          const num = String(i + 1).padStart(2, '0');
+          const color = colors[i % colors.length];
+          const hasUrl = !!p.url;
+          const isFaIcon = p.emoji && p.emoji.startsWith('fa-');
+          const iconHtml = isFaIcon ? `<i class="fa-solid ${p.emoji} pv-project-icon"></i>` : `<span class="pv-project-icon" style="font-size:16px">${p.emoji || '🚀'}</span>`;
+          const bodyDesc = p.desc && p.desc.length > 40 ? p.desc : (p.features || []).join('. ');
+          return `
+            <div class="pv-project-row" style="--pv-color:${color}">
+              <span class="pv-project-num" style="color:${color}">${num}</span>
+              <div class="pv-project-info">
+                <div class="pv-project-name">
+                  ${iconHtml} ${p.name}
+                </div>
+                <div class="pv-project-desc">${bodyDesc || ''}</div>
+              </div>
+              <div class="pv-project-tech">
+                ${p.tech && p.tech.length
+                  ? p.tech.slice(0, 3).map(t => `<span class="chip" style="font-size:8px;padding:2px 8px">${t}</span>`).join('') + `<span class="pv-project-status ${hasUrl ? 'has-url' : ''}">${hasUrl ? 'Live' : 'Draft'}</span>`
+                  : `<span class="pv-project-status ${hasUrl ? 'has-url' : ''}">${hasUrl ? 'Live' : 'Draft'}</span>`
+                }
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        pvProjects.style.display = 'none';
+      }
+
+      // Resume
+      if (state.resumeUrl) {
+        pvResume.style.display = 'block';
+        document.getElementById('pvResumeUrl').textContent = state.resumeUrl;
+      } else {
+        pvResume.style.display = 'none';
+      }
     }
 
     function updateExport() {

@@ -56,6 +56,11 @@ const CmsRenderer = (() => {
       const color = colors[i % colors.length];
       const isFaIcon = proj.emoji && proj.emoji.startsWith('fa-');
       const sceneIcon = isFaIcon ? `<i class="fa-solid ${proj.emoji}"></i>` : `<span style="font-size:84px">${proj.emoji || '🚀'}</span>`;
+      // Use desc as body text if it's long enough to be a paragraph (>40 chars),
+      // otherwise fall back to features array joined into sentences.
+      const bodyDesc = proj.desc && proj.desc.length > 40
+        ? proj.desc
+        : (proj.features || []).join('. ');
       return `
         <article class="story-chapter ${i === 0 ? 'featured' : ''}" data-cat="all" style="--chap-color: ${color}">
           <div class="chapter-scene">${sceneIcon}</div>
@@ -66,7 +71,8 @@ const CmsRenderer = (() => {
               ${i === 0 ? '<span class="chapter-featured-badge"><i class="fa-solid fa-star"></i> Featured</span>' : ''}
             </div>
             <h2 class="chapter-title">${proj.name}</h2>
-            <p class="chapter-body">${(proj.features || []).join('. ') || 'No description available.'}</p>
+            ${proj.hook ? `<p class="chapter-lead">${proj.hook}</p>` : ''}
+            <p class="chapter-body">${bodyDesc || 'No description available.'}</p>
             ${proj.tech && proj.tech.length ? `
             <div class="chapter-stack">
               ${proj.tech.map(t => `<span class="chip">${t}</span>`).join('')}
@@ -112,7 +118,9 @@ const CmsRenderer = (() => {
         initStoryChapters(true);
       }
     }
-    if (typeof Revealer !== 'undefined') {
+    // Only run the vanilla revealer on pages that aren't using the GSAP motion engine
+    // to avoid fighting with ScrollTrigger over the same [data-reveal] elements.
+    if (typeof Revealer !== 'undefined' && !window.__useGsapMotion) {
       setTimeout(() => {
         Revealer.init();
         Revealer.refresh();
