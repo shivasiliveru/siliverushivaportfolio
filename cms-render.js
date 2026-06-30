@@ -10,7 +10,7 @@ const CmsRenderer = (() => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const data = JSON.parse(saved);
-        if (data && data.skills && data.projects) return data;
+        if (data && typeof data === 'object') return data;
       }
     } catch (_) {}
     return null;
